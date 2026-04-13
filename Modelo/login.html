@@ -7,23 +7,23 @@
     <link rel="stylesheet" href="dist/css/app.css">
 </head>
 <body>
-    <main class="contenedor-login">
-        <div class="caja-login">
+    <main class="pantalla-login">
+        <div class="tarjeta-login">
             <h2>Iniciar sesión</h2>
             
             <form action="procesar_login.php" method="POST" id="formulario-login">
-                <div class="campo-formulario">
-                    <label for="correo">CORREO</label>
-                    <input type="email" id="correo" name="correo" required>
+                <div class="formulario-grupo">
+                    <label for="email">CORREO</label>
+                    <input type="email" id="email" name="correo" class="entrada-texto" required>
                 </div>
                 
-                <div class="campo-formulario">
+                <div class="formulario-grupo">
                     <label for="password">CONTRASEÑA</label>
-                    <input type="password" id="password" name="password" required>
+                    <input type="password" id="password" name="password" class="entrada-texto" required>
                 </div>
                 
-                <div class="acciones-formulario">
-                    <button type="submit" class="btn-submit">INICIAR SESIÓN</button>
+                <div class="formulario-grupo">
+                    <button type="submit" class="btn-primario">INICIAR SESIÓN</button>
                 </div>
             </form>
         </div>
