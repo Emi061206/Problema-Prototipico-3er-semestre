@@ -6,26 +6,30 @@
     <title>Iniciar Sesión - Agricultores</title>
     <link rel="stylesheet" href="dist/css/app.css">
 </head>
-<body>
-    <main class="pantalla-login">
-        <div class="tarjeta-login">
-            <h2>Iniciar sesión</h2>
+<body class="pantalla-login">
+    <main class="tarjeta-login">
+        <header class="login-header">
+            <h2>INICIAR SESIÓN</h2>
+        </header>
+        
+        <form action="procesar_login.php" method="POST" id="formulario-login" class="formulario">
+            <div class="formulario-grupo">
+                <label for="email">CORREO</label>
+                <input type="email" id="email" name="correo" class="entrada-texto" placeholder="ejemplo@correo.com" required>
+            </div>
             
-            <form action="procesar_login.php" method="POST" id="formulario-login">
-                <div class="formulario-grupo">
-                    <label for="email">CORREO</label>
-                    <input type="email" id="email" name="correo" class="entrada-texto" required>
-                </div>
-                
-                <div class="formulario-grupo">
-                    <label for="password">CONTRASEÑA</label>
-                    <input type="password" id="password" name="password" class="entrada-texto" required>
-                </div>
-                
-                <div class="formulario-grupo">
-                    <button type="submit" class="btn-primario">INICIAR SESIÓN</button>
-                </div>
-            </form>
+            <div class="formulario-grupo">
+                <label for="password">CONTRASEÑA</label>
+                <input type="password" id="password" name="password" class="entrada-texto" placeholder="********" required>
+            </div>
+            
+            <div class="acciones-formulario">
+                <button type="submit" class="btn-primario">INICIAR SESIÓN</button>
+            </div>
+        </form>
+
+        <div class="login-footer">
+            <a href="index.html">← VOLVER AL INICIO</a>
         </div>
     </main>
 

@@ -5,75 +5,78 @@
 }
 
 body {
-  background-color: #f8f9fa;
-  color: #333333;
-  font-family: Arial, sans-serif;
+  background-color: #fafafa;
+  color: #212121;
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   line-height: 1.6;
 }
 
 .encabezado-principal {
-  background-color: #007bff;
-  padding: 60px 20px;
+  background-color: #2d5a27;
+  padding: 2rem 1rem;
   text-align: center;
-  color: #ffffff;
+  border-bottom: 5px solid #5d4037;
 }
 
 .encabezado-principal h1 {
-  margin: 0;
-  font-size: 1.8rem;
   color: #ffffff;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.hero-xochimilco {
+  width: 100%;
+  height: 300px;
+  background-image: url("../../img/chinampero.jpg");
+  background-size: cover;
+  background-position: center;
+  border-bottom: 2px solid #2d5a27;
 }
 
 .contenedor-principal {
-  max-width: 1100px;
-  margin: 40px auto;
-  padding: 0 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
 }
 
 .menu-navegacion {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
 }
 
 .btn-nav {
   background-color: #ffffff;
-  border: 2px solid #007bff;
-  color: #007bff;
-  padding: 25px;
-  font-size: 1rem;
+  border: 2px solid #2d5a27;
+  color: #2d5a27;
+  padding: 1.5rem;
   font-weight: bold;
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: 4px;
   transition: all 0.3s ease;
+  text-align: center;
 }
 
 .btn-nav:hover {
-  background-color: #007bff;
+  background-color: #2d5a27;
   color: #ffffff;
-  transform: translateY(-3px);
 }
 
 .acceso-sistema {
   text-align: center;
+  padding: 2rem;
+  background-color: #f1f8e9;
+  border-radius: 8px;
 }
 
 .btn-login {
   display: inline-block;
-  background-color: #6c757d;
-  color: #ffffff;
-  padding: 12px 30px;
-  text-decoration: none;
-  border-radius: 4px;
+  color: #2d5a27;
+  text-decoration: underline;
   font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-
-.btn-login:hover {
-  background-color: rgb(91.8, 99.45, 106.25);
+  font-size: 1.1rem;
 }
 
 .pantalla-login {
@@ -81,20 +84,37 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: rgb(233.475, 236.55, 239.625);
+  background-color: #f1f8e9;
 }
 
 .tarjeta-login {
   background-color: #ffffff;
-  padding: 40px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 3rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 400px;
+  max-width: 450px;
+  border-top: 8px solid #2d5a27;
+}
+
+.login-header h2 {
+  text-align: center;
+  color: #2d5a27;
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+  letter-spacing: 2px;
 }
 
 .formulario-grupo {
-  margin-bottom: 20px;
+  margin-bottom: 1.5rem;
+}
+
+.formulario-grupo label {
+  display: block;
+  font-weight: bold;
+  color: #5d4037;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
 }
 
 .entrada-texto {
@@ -102,11 +122,11 @@ body {
   padding: 12px;
   border: 1px solid #cccccc;
   border-radius: 4px;
-  font-family: Arial, sans-serif;
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 .btn-primario {
-  background-color: #007bff;
+  background-color: #2d5a27;
   color: #ffffff;
   border: none;
   padding: 12px 20px;
@@ -118,34 +138,29 @@ body {
 }
 
 .btn-primario:hover {
-  background-color: rgb(0, 104.55, 216.75);
+  background-color: rgb(38.25, 76.5, 33.15);
 }
 
-.alerta {
-  padding: 10px;
-  margin-bottom: 15px;
-  border-radius: 4px;
+.login-footer {
+  margin-top: 2rem;
   text-align: center;
+}
+
+.login-footer a {
+  color: #6c757d;
+  text-decoration: none;
+  font-size: 0.8rem;
   font-weight: bold;
-  width: 100%;
 }
 
-.alerta-error {
-  background-color: rgb(246.2, 213.4, 213.4);
-  color: #d32f2f;
-  border: 1px solid #d32f2f;
-}
-
-.alerta-exito {
-  background-color: rgb(205.4385964912, 236.7614035088, 207.0245614035);
-  color: #2e7d32;
-  border: 1px solid #2e7d32;
+.login-footer a:hover {
+  color: #2d5a27;
 }
 
 .pie-pagina {
-  margin-top: 50px;
-  padding: 20px;
   text-align: center;
-  background-color: #eeeeee;
+  padding: 2rem;
+  font-size: 0.9rem;
+  color: #5d4037;
 }
 /*# sourceMappingURL=app.css.map */
