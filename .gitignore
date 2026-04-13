@@ -1,0 +1,34 @@
+# VARIABLES DE ENTORNO Y CREDENCIALES
+# Protege las contraseñas de bases de datos locales (MySQL) y configuraciones privadas.
+# Es la regla de seguridad más crítica del proyecto.
+.env
+
+# ARCHIVOS DE DATOS Y EXTRACCIONES
+# Evita subir datasets pesados, ya sean los crudos extraídos del SIAP o lecturas futuras de IoT.
+# Git está diseñado para código, no para almacenar bases de datos masivas.
+*.csv
+
+# DIRECTORIOS ESPECÍFICOS DEL PROYECTO
+# Ignora cualquier exportación, dump o respaldo de la base de datos local.
+bases de datos/
+
+# Bloquea explícitamente la carpeta que contiene los archivos limpios procesados por los scripts.
+Liempeza de Datos/Datos Limpios/
+
+# Excluye todas las dependencias y librerías descargadas por Node.js para la capa del frontend.
+# Esta carpeta suele pesar cientos de megabytes y puede reconstruirse con el package.json.
+Modelo/node_modules/
+
+# CACHÉ Y ENTORNOS VIRTUALES DE PYTHON
+# Ignora los archivos binarios compilados automáticamente por Python (optimizadores de ejecución).
+__pycache__/
+
+# Bloquea las carpetas estándar donde se instalan las librerías locales de Python 
+# (SQLAlchemy, Pandas, dotenv, etc.). Estas se reconstruyen mediante un requirements.txt.
+venv/
+.venv/
+env/
+
+# ARCHIVOS DEL SISTEMA OPERATIVO
+# Evita subir archivos ocultos de caché de miniaturas e indexación generados por Windows.
+Thumbs.db

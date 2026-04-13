@@ -1,0 +1,1 @@
+{"version":3,"sources":["app.scss"],"names":[],"mappings":"AAEA;EACI;EACA;EACA;;;AAGJ;EACI,OATY","sourcesContent":["$primary-color: #007bff;\n\nbody {\n    background-color: #f8f9fa;\n    color: #333;\n    font-family: Arial, sans-serif;\n}\n\nh1 {\n    color: $primary-color;\n}\n"],"file":"app.css"}
