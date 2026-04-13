@@ -1,11 +1,98 @@
+@use "sass:color";
+
 $primary-color: #007bff;
+$background-color: #f8f9fa;
+$text-color: #333333;
+$font-family-base: Arial, sans-serif;
+$white: #ffffff;
+$color-alerta: #d32f2f;
+$color-exito: #2e7d32;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 body {
-    background-color: #f8f9fa;
-    color: #333;
-    font-family: Arial, sans-serif;
+    background-color: $background-color;
+    color: $text-color;
+    font-family: $font-family-base;
+    line-height: 1.6;
 }
 
 h1 {
     color: $primary-color;
+}
+
+.contenedor {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.pantalla-login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: color.scale($background-color, $lightness: -5%);
+}
+
+.tarjeta-login {
+    background-color: $white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.formulario-grupo {
+    margin-bottom: 20px;
+}
+
+.entrada-texto {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    font-family: $font-family-base;
+}
+
+.btn-primario {
+    background-color: $primary-color;
+    color: $white;
+    border: none;
+    padding: 12px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 100%;
+    font-weight: bold;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.btn-primario:hover {
+    background-color: color.scale($primary-color, $lightness: -15%);
+}
+
+.alerta {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: bold;
+    width: 100%;
+}
+
+.alerta-error {
+    background-color: color.scale($color-alerta, $lightness: 80%);
+    color: $color-alerta;
+    border: 1px solid $color-alerta;
+}
+
+.alerta-exito {
+    background-color: color.scale($color-exito, $lightness: 80%);
+    color: $color-exito;
+    border: 1px solid $color-exito;
 }

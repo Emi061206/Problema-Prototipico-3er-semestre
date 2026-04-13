@@ -1,10 +1,89 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   background-color: #f8f9fa;
-  color: #333;
+  color: #333333;
   font-family: Arial, sans-serif;
+  line-height: 1.6;
 }
 
 h1 {
   color: #007bff;
+}
+
+.contenedor {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.pantalla-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: rgb(233.475, 236.55, 239.625);
+}
+
+.tarjeta-login {
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.formulario-grupo {
+  margin-bottom: 20px;
+}
+
+.entrada-texto {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  font-family: Arial, sans-serif;
+}
+
+.btn-primario {
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  padding: 12px 20px;
+  cursor: pointer;
+  border-radius: 4px;
+  width: 100%;
+  font-weight: bold;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.btn-primario:hover {
+  background-color: rgb(0, 104.55, 216.75);
+}
+
+.alerta {
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: bold;
+  width: 100%;
+}
+
+.alerta-error {
+  background-color: rgb(246.2, 213.4, 213.4);
+  color: #d32f2f;
+  border: 1px solid #d32f2f;
+}
+
+.alerta-exito {
+  background-color: rgb(205.4385964912, 236.7614035088, 207.0245614035);
+  color: #2e7d32;
+  border: 1px solid #2e7d32;
 }
 /*# sourceMappingURL=app.css.map */

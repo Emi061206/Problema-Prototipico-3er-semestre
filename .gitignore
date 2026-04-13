@@ -32,3 +32,6 @@ env/
 # ARCHIVOS DEL SISTEMA OPERATIVO
 # Evita subir archivos ocultos de caché de miniaturas e indexación generados por Windows.
 Thumbs.db
+
+Modelo/dist/
+*.map

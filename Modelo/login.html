@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - Agricultores</title>
+    <link rel="stylesheet" href="dist/css/styles.css">
+</head>
+<body>
+    <main class="contenedor-login">
+        <div class="caja-login">
+            <h2>Iniciar sesión</h2>
+            
+            <form action="procesar_login.php" method="POST" id="formulario-login">
+                <div class="campo-formulario">
+                    <label for="correo">CORREO</label>
+                    <input type="email" id="correo" name="correo" required>
+                </div>
+                
+                <div class="campo-formulario">
+                    <label for="password">CONTRASEÑA</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <div class="acciones-formulario">
+                    <button type="submit" class="btn-submit">INICIAR SESIÓN</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script src="dist/js/app.js"></script>
+</body>
+</html>

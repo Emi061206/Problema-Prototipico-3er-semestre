@@ -1,0 +1,74 @@
+@use "sass:color";
+
+$color-primario: #2e7d32;
+$color-secundario: #81c784;
+$color-fondo: #f4f6f4;
+$color-texto: #333333;
+$color-alerta: #d32f2f;
+$color-blanco: #ffffff;
+
+$fuente-principal: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: $fuente-principal;
+    background-color: $color-fondo;
+    color: $color-texto;
+    line-height: 1.6;
+}
+
+.contenedor {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.pantalla-login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: $color-secundario;
+}
+
+.tarjeta-login {
+    background-color: $color-blanco;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.formulario-grupo {
+    margin-bottom: 20px;
+}
+
+.entrada-texto {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    font-family: $fuente-principal;
+}
+
+.btn-primario {
+    background-color: $color-primario;
+    color: $color-blanco;
+    border: none;
+    padding: 12px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 100%;
+    font-weight: bold;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.btn-primario:hover {
+    background-color: color.scale($color-primario, $lightness: -10%);
+}
