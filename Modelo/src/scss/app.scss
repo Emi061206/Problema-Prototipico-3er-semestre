@@ -1,6 +1,7 @@
 @use "sass:color";
 
 $primary-color: #007bff;
+$secondary-color: #6c757d;
 $background-color: #f8f9fa;
 $text-color: #333333;
 $font-family-base: Arial, sans-serif;
@@ -21,14 +22,69 @@ body {
     line-height: 1.6;
 }
 
-h1 {
-    color: $primary-color;
+.encabezado-principal {
+    background-color: $primary-color;
+    padding: 60px 20px;
+    text-align: center;
+    color: $white;
 }
 
-.contenedor {
-    max-width: 1200px;
-    margin: 0 auto;
+.encabezado-principal h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: $white;
+}
+
+.contenedor-principal {
+    max-width: 1100px;
+    margin: 40px auto;
     padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.menu-navegacion {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.btn-nav {
+    background-color: $white;
+    border: 2px solid $primary-color;
+    color: $primary-color;
+    padding: 25px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-nav:hover {
+    background-color: $primary-color;
+    color: $white;
+    transform: translateY(-3px);
+}
+
+.acceso-sistema {
+    text-align: center;
+}
+
+.btn-login {
+    display: inline-block;
+    background-color: $secondary-color;
+    color: $white;
+    padding: 12px 30px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn-login:hover {
+    background-color: color.scale($secondary-color, $lightness: -15%);
 }
 
 .pantalla-login {
@@ -95,4 +151,11 @@ h1 {
     background-color: color.scale($color-exito, $lightness: 80%);
     color: $color-exito;
     border: 1px solid $color-exito;
+}
+
+.pie-pagina {
+    margin-top: 50px;
+    padding: 20px;
+    text-align: center;
+    background-color: #eeeeee;
 }
