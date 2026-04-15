@@ -28,31 +28,6 @@ $nombre_agricultor = $usuario_autenticado ? htmlspecialchars($_SESSION['usuario_
     <!-- Encabezado principal del sitio -->
     <header class="encabezado-principal">
         <h1>ANÁLISIS TÉCNICO-ECONÓMICO PARA LA DIVERSIFICACIÓN DE CULTIVOS EN MÉXICO</h1>
-        
-        <!-- Mostrar mensaje de bienvenida solo si el usuario está autenticado -->
-        <?php if($usuario_autenticado): ?>
-            <p style="color: white; margin-top: 10px; font-weight: bold;">
-                Bienvenido, Productor: <?php echo $nombre_agricultor; ?>
-                <!-- Muestra el nombre del agricultor autenticado -->
-            </p>
-        <?php endif; ?>
-    </header>
-
-    <!-- Sección decorativa con imagen de fondo (banner de Xochimilco) -->
-    <div class="hero-xochimilco"></div>
-
-    <!-- Contenedor principal del contenido -->
-    <main class="contenedor-principal">
-        <!-- Menú de navegación con botones para diferentes secciones -->
-        <nav class="menu-navegacion">
-            <button class="btn-nav">ESTADÍSTICAS</button>
-            <!-- Botón para ver estadísticas agrícolas -->
-            <button class="btn-nav">DATOS DE CULTIVOS</button>
-            <!-- Botón para acceder a información de cultivos -->
-            <button class="btn-nav">UN POCO DE INTRODUCCIÓN</button>
-            <!-- Botón para ver información introductoria del sistema -->
-        </nav>
-        
         <!-- Sección de acceso al sistema con botón dinámico según estado de autenticación -->
         <section class="acceso-sistema">
             <?php if(!$usuario_autenticado): ?>
@@ -65,6 +40,32 @@ $nombre_agricultor = $usuario_autenticado ? htmlspecialchars($_SESSION['usuario_
             <?php endif; ?>
         </section>
     </main>
+    <!-- Contenedor principal del contenido -->
+    <main class="contenedor-principal">
+        <!-- Menú de navegación con botones para diferentes secciones -->
+        <nav class="menu-navegacion">
+            <button class="btn-nav">ESTADÍSTICAS</button>
+            <!-- Botón para ver estadísticas agrícolas -->
+            <button class="btn-nav">DATOS DE CULTIVOS</button>
+            <!-- Botón para acceder a información de cultivos -->
+            <button class="btn-nav">UN POCO DE INTRODUCCIÓN</button>
+            <!-- Botón para ver información introductoria del sistema -->
+        </nav>
+        
+
+        <!-- Mostrar mensaje de bienvenida solo si el usuario está autenticado -->
+        <?php if($usuario_autenticado): ?>
+            <p style="color: white; margin-top: 10px; font-weight: bold;">
+                Bienvenido, Productor: <?php echo $nombre_agricultor; ?>
+                <!-- Muestra el nombre del agricultor autenticado -->
+            </p>
+        <?php endif; ?>
+    </header>
+
+    <!-- Sección decorativa con imagen de fondo (banner de Xochimilco) -->
+    <div class="hero-xochimilco"></div>
+
+
 
     <!-- Pie de página con información de derechos de autor -->
     <footer class="pie-pagina">
