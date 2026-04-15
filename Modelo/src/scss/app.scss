@@ -1,53 +1,61 @@
+// Importa funciones de color de Sass para manipulación de colores
 @use "sass:color";
 
-$color-xochimilco-verde: #2d5a27;
-$color-xochimilco-claro: #f1f8e9;
-$color-secundario: #6c757d;
-$color-tierra: #5d4037;
-$color-fondo: #fafafa;
-$color-texto: #212121;
-$blanco: #ffffff;
-$fuente-principal: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+// Define variables de colores para el tema de Xochimilco
+$color-xochimilco-verde: #2d5a27;  // Verde característico de Xochimilco
+$color-xochimilco-claro: #f1f8e9;  // Verde claro complementario
+$color-secundario: #6c757d;        // Gris para elementos secundarios
+$color-tierra: #5d4037;            // Marrón tierra para acentos
+$color-fondo: #fafafa;             // Fondo gris muy claro
+$color-texto: #212121;             // Texto casi negro
+$blanco: #ffffff;                  // Blanco puro
+$fuente-principal: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; // Pila de fuentes moderna
 
+// Reset básico de CSS para consistencia entre navegadores
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    box-sizing: border-box; // Incluye padding y border en el ancho/alto total
 }
 
+// Estilos base del body
 body {
-    background-color: $color-fondo;
-    color: $color-texto;
-    font-family: $fuente-principal;
-    line-height: 1.6;
+    background-color: $color-fondo;    // Fondo gris claro
+    color: $color-texto;               // Texto oscuro
+    font-family: $fuente-principal;    // Fuente moderna
+    line-height: 1.6;                 // Espaciado de línea cómodo
 }
 
+// Estilos del encabezado principal
 .encabezado-principal {
-    background-color: $color-xochimilco-verde;
-    padding: 2rem 1rem;
-    text-align: center;
-    border-bottom: 5px solid $color-tierra;
+    background-color: $color-xochimilco-verde; // Fondo verde Xochimilco
+    padding: 2rem 1rem;                       // Espaciado interno
+    text-align: center;                        // Centrado horizontal
+    border-bottom: 5px solid $color-tierra;    // Borde inferior marrón
 }
 
+// Estilos del título en el encabezado
 .encabezado-principal h1 {
-    color: $blanco;
-    font-size: 1.5rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    color: $blanco;                    // Texto blanco
+    font-size: 1.5rem;                 // Tamaño mediano
+    text-transform: uppercase;         // Mayúsculas
+    letter-spacing: 1px;               // Espaciado entre letras
 }
 
+// Estilos de la sección hero con imagen de chinampero
 .hero-xochimilco {
-    width: 100%;
-    height: 300px;
-    background-image: url('../../img/chinampero.jpg');
-    background-size: cover;
-    background-position: center;
-    border-bottom: 2px solid $color-xochimilco-verde;
+    width: 100%;                       // Ancho completo
+    height: 300px;                     // Alto fijo
+    background-image: url('../../img/chinampero.jpg'); // Imagen de fondo
+    background-size: cover;            // Cubre todo el área
+    background-position: center;       // Centrada
+    border-bottom: 2px solid $color-xochimilco-verde; // Borde inferior verde
 }
 
+// Contenedor principal con ancho máximo
 .contenedor-principal {
-    max-width: 1200px;
-    margin: 2rem auto;
+    max-width: 1200px;                 // Ancho máximo
+    margin: 2rem auto;                 // Centrado verticalmente con margen superior/inferior
     padding: 0 1rem;
 }
 

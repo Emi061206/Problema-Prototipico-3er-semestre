@@ -7,8 +7,9 @@ from sqlalchemy import create_engine
 # Importamos load_dotenv de python-dotenv para cargar las variables de entorno desde un archivo .env
 from dotenv import load_dotenv
 
-# Construimos la ruta absoluta al archivo .env ubicado en el subdirectorio 'Modelo'
-ruta_env = os.path.join(os.path.dirname(__file__), 'Modelo', '.env')
+# Construimos la ruta absoluta al archivo .env ubicado en la raíz del proyecto
+# (el archivo .env real está en el mismo nivel que este script, no en 'Modelo/')
+ruta_env = os.path.join(os.path.dirname(__file__), '.env')
 # Cargamos las variables de entorno definidas en el archivo .env en el entorno actual
 load_dotenv(ruta_env)
 

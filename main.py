@@ -19,4 +19,4 @@ def iniciar_proceso():
         
 # Garantiza que la función principal solo se ejecute si el script es llamado directamente
 if __name__ == "__main__":
-    iniciar_proceso()
+    iniciar_proceso()  # Ejecuta el proceso ETL completo

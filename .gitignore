@@ -1,37 +1,46 @@
 # VARIABLES DE ENTORNO Y CREDENCIALES
 # Protege las contraseñas de bases de datos locales (MySQL) y configuraciones privadas.
 # Es la regla de seguridad más crítica del proyecto.
-.env
+.env [cite: 23]
 
 # ARCHIVOS DE DATOS Y EXTRACCIONES
 # Evita subir datasets pesados, ya sean los crudos extraídos del SIAP o lecturas futuras de IoT.
 # Git está diseñado para código, no para almacenar bases de datos masivas.
-*.csv
+*.csv [cite: 25]
+*.zip
+*.xlsx
+
+# RESPALDOS DE BASES DE DATOS (DUMPS)
+# Ignora los archivos de exportación de MySQL Workbench para evitar saturar el repositorio.
+# Estos archivos suelen ser pesados y contienen datos que ya residen en tu servidor local.
+smartagroforestry.sql
+problema_prototipio_3er_semestre.sql
+bases de datos/ [cite: 26]
 
 # DIRECTORIOS ESPECÍFICOS DEL PROYECTO
-# Ignora cualquier exportación, dump o respaldo de la base de datos local.
-bases de datos/
-
 # Bloquea explícitamente la carpeta que contiene los archivos limpios procesados por los scripts.
-Liempeza de Datos/Datos Limpios/
+Liempeza de Datos/Datos Limpios/ [cite: 27]
 
 # Excluye todas las dependencias y librerías descargadas por Node.js para la capa del frontend.
 # Esta carpeta suele pesar cientos de megabytes y puede reconstruirse con el package.json.
-Modelo/node_modules/
+Modelo/node_modules/ [cite: 29]
+
+# BLOQUEO DE ARCHIVOS COMPILADOS Y MAPAS (FRONTEND)
+# Evita subir los archivos autogenerados por Gulp que se reconstruyen en cada ejecución.
+Modelo/dist/
+*.map
 
 # CACHÉ Y ENTORNOS VIRTUALES DE PYTHON
 # Ignora los archivos binarios compilados automáticamente por Python (optimizadores de ejecución).
-__pycache__/
+__pycache__/ [cite: 30]
 
-# Bloquea las carpetas estándar donde se instalan las librerías locales de Python 
-# (SQLAlchemy, Pandas, dotenv, etc.). Estas se reconstruyen mediante un requirements.txt.
+# Bloquea las carpetas donde se instalan las librerías locales de Python (SQLAlchemy, Pandas, etc.).
+# Estas se reconstruyen mediante un archivo de requerimientos para optimizar el almacenamiento.
 venv/
-.venv/
+.venv/ 
 env/
 
 # ARCHIVOS DEL SISTEMA OPERATIVO
 # Evita subir archivos ocultos de caché de miniaturas e indexación generados por Windows.
-Thumbs.db
-
-Modelo/dist/
-*.map
+Thumbs.db [cite: 32]
+Desktop.ini
