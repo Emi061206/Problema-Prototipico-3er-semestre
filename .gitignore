@@ -23,7 +23,7 @@ Liempeza de Datos/Datos Limpios/ [cite: 27]
 
 # Excluye todas las dependencias y librerías descargadas por Node.js para la capa del frontend.
 # Esta carpeta suele pesar cientos de megabytes y puede reconstruirse con el package.json.
-Modelo/node_modules/ [cite: 29]
+node_modules/
 
 # BLOQUEO DE ARCHIVOS COMPILADOS Y MAPAS (FRONTEND)
 # Evita subir los archivos autogenerados por Gulp que se reconstruyen en cada ejecución.
