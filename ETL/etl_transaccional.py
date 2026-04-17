@@ -1,3 +1,9 @@
+import sys
+import os
+
+# Agrega el directorio raíz del proyecto al path para poder importar módulos del nivel superior
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 from sqlalchemy import text
 from database import obtener_conexion_agro
 
