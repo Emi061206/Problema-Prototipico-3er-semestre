@@ -2,6 +2,8 @@
 import pandas as pd
 # Importamos os para interactuar con el sistema operativo, específicamente para manejar rutas de archivos
 import os
+# Importamos quote_plus para codificar caracteres especiales en la contraseña de la URL de conexión
+from urllib.parse import quote_plus
 # Importamos create_engine de sqlalchemy para crear una conexión a la base de datos
 from sqlalchemy import create_engine
 # Importamos load_dotenv de python-dotenv para cargar las variables de entorno desde un archivo .env
@@ -19,8 +21,11 @@ contrasena = os.getenv("DB_PASSWORD")
 host = os.getenv("DB_HOST")
 bd = os.getenv("DB_NAME")
 
+# Escapa caracteres especiales de la contraseña (ej: '@') para que no rompan el parseo de la URL de conexión
+contrasena_codificada = quote_plus(contrasena)
+
 # Creamos el motor de conexión a la base de datos MySQL utilizando pymysql como conector
-engine = create_engine(f"mysql+pymysql://{usuario}:{contrasena}@{host}:3306/{bd}")
+engine = create_engine(f"mysql+pymysql://{usuario}:{contrasena_codificada}@{host}:3306/{bd}")
 
 # Definimos la ruta absoluta donde se encuentra el archivo CSV con las lecturas reales de los sensores
 ruta_sensores_reales = r"C:\Users\Dell\Desktop\Problema prototipico 3er semestre\Liempeza de Datos\Datos Limpios\lecturas_reales_iot.csv"

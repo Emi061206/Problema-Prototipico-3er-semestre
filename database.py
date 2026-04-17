@@ -1,4 +1,5 @@
 import os
+from urllib.parse import quote_plus
 from sqlalchemy import create_engine
 from dotenv import load_dotenv
 
@@ -15,8 +16,10 @@ def obtener_conexion():
     host = os.getenv("DB_HOST")
     bd = os.getenv("DB_NAME")
     
+    # Escapa caracteres especiales de la contraseña (ej: '@', '#') para que no rompan el parseo de la URL
+    contrasena_codificada = quote_plus(contrasena)
     # Construye la URL de conexión para MySQL usando pymysql como driver
-    url = f"mysql+pymysql://{usuario}:{contrasena}@{host}:3306/{bd}"
+    url = f"mysql+pymysql://{usuario}:{contrasena_codificada}@{host}:3306/{bd}"
     # Crea y retorna el motor de conexión SQLAlchemy
     return create_engine(url)
 
@@ -27,7 +30,9 @@ def obtener_conexion_agro():
     host = os.getenv("DB_HOST")
     bd = os.getenv("DB_NAME_AGRO")
     
+    # Escapa caracteres especiales de la contraseña (ej: '@', '#') para que no rompan el parseo de la URL
+    contrasena_codificada = quote_plus(contrasena)
     # Construye la URL de conexión para la base de datos agro
-    url = f"mysql+pymysql://{usuario}:{contrasena}@{host}:3306/{bd}"
+    url = f"mysql+pymysql://{usuario}:{contrasena_codificada}@{host}:3306/{bd}"
     # Crea y retorna el motor de conexión SQLAlchemy para la BD agro
     return create_engine(url)

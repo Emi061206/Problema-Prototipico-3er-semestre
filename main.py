@@ -6,8 +6,17 @@ def iniciar_proceso():
     # Inicializa el motor de conexión a la base de datos
     engine = obtener_conexion()
     
-    # Extrae mediante SQL el histórico de cultivos y sus precios desde MySQL
-    df_siap = pd.read_sql("SELECT Nomcultivo, Preciomediorural FROM Historico_Mercado", con=engine)
+    # Extrae mediante SQL el histórico de cultivos y sus precios desde MySQL.
+    # Se hace JOIN con catalogo_cultivos porque historico_mercado no contiene
+    # el nombre del cultivo directamente; este reside en la tabla catalogo_cultivos.
+    df_siap = pd.read_sql("""
+        SELECT
+            c.Nombre_Cultivo  AS Nomcultivo,
+            h.Preciomediorural
+        FROM historico_mercado h
+        JOIN catalogo_cultivos c
+          ON c.Historico_Mercado_ID_Registro = h.ID_Registro
+    """, con=engine)
     
     # Verifica que el DataFrame contenga información antes de iniciar el procesamiento
     if not df_siap.empty:

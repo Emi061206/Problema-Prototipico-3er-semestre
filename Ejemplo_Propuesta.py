@@ -22,7 +22,8 @@ def calcular_indicadores_icc():
     
     condiciones = [icc > 0.5, (icc >= 0) & (icc <= 0.5), icc < 0]
     decisiones = ["Altamente Viable", "Viabilidad Moderada", "No Viable"]
-    decision_final = np.select(condiciones, decisiones)
+    # Se especifica default como string para compatibilidad con NumPy 2.x (evita error de dtype mixto int/str)
+    decision_final = np.select(condiciones, decisiones, default='No Definido')
     
     resultados_financieros = []
     
@@ -39,3 +40,5 @@ def calcular_indicadores_icc():
         resultados_financieros.append(registro)
         
     return resultados_financieros
+
+print(calcular_indicadores_icc())
