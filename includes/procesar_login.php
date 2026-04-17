@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 session_start();
 require_once __DIR__ . '/../includes/conexion.php';
 
@@ -14,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $db = obtenerConexionAgro();
         
-        $query = "SELECT id, nombre, password FROM Productores WHERE correo = :email LIMIT 1";
+        $query = "SELECT ID_Productor, Nombre_Chinampa, password FROM productores WHERE correo = :email LIMIT 1";
         $stmt = $db->prepare($query);
         $stmt->bindParam(':email', $email, PDO::PARAM_STR);
         $stmt->execute();
@@ -23,8 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($usuario && password_verify($password, $usuario['password'])) {
             session_regenerate_id(true);
-            $_SESSION['usuario_id'] = $usuario['id'];
-            $_SESSION['usuario_nombre'] = $usuario['nombre'];
+            $_SESSION['usuario_id'] = $usuario['ID_Productor'];
+            $_SESSION['usuario_nombre'] = $usuario['Nombre_Chinampa'];
             $_SESSION['login_exitoso'] = true;
 
             header('Location: index.php');

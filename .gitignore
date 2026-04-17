@@ -1,46 +1,56 @@
-# VARIABLES DE ENTORNO Y CREDENCIALES
-# Protege las contraseñas de bases de datos locales (MySQL) y configuraciones privadas.
-# Es la regla de seguridad más crítica del proyecto.
-.env [cite: 23]
+# VARIABLES DE ENTORNO Y SEGURIDAD
+.env
+generar_hash.php
+.env.local
+.env.*.local
 
-# ARCHIVOS DE DATOS Y EXTRACCIONES
-# Evita subir datasets pesados, ya sean los crudos extraídos del SIAP o lecturas futuras de IoT.
-# Git está diseñado para código, no para almacenar bases de datos masivas.
-*.csv [cite: 25]
+# ARCHIVOS DE DATOS (CIENCIA DE DATOS)
+*.csv
 *.zip
 *.xlsx
+*.json
+!package.json
 
-# RESPALDOS DE BASES DE DATOS (DUMPS)
-# Ignora los archivos de exportación de MySQL Workbench para evitar saturar el repositorio.
-# Estos archivos suelen ser pesados y contienen datos que ya residen en tu servidor local.
-smartagroforestry.sql
-problema_prototipio_3er_semestre.sql
-bases de datos/ [cite: 26]
+# RESPALDOS DE BASES DE DATOS
+*.sql
+bases de datos/
 
 # DIRECTORIOS ESPECÍFICOS DEL PROYECTO
-# Bloquea explícitamente la carpeta que contiene los archivos limpios procesados por los scripts.
-Liempeza de Datos/Datos Limpios/ [cite: 27]
+"Limpieza de Datos/Datos Limpios/"
+"Liempeza de Datos/Datos Limpios/"
 
-# Excluye todas las dependencias y librerías descargadas por Node.js para la capa del frontend.
-# Esta carpeta suele pesar cientos de megabytes y puede reconstruirse con el package.json.
+# DEPENDENCIAS DE SOFTWARE
 node_modules/
+vendor/
 
-# BLOQUEO DE ARCHIVOS COMPILADOS Y MAPAS (FRONTEND)
-# Evita subir los archivos autogenerados por Gulp que se reconstruyen en cada ejecución.
+# ARCHIVOS COMPILADOS Y FRONTEND
 Modelo/dist/
 *.map
+.sass-cache/
 
-# CACHÉ Y ENTORNOS VIRTUALES DE PYTHON
-# Ignora los archivos binarios compilados automáticamente por Python (optimizadores de ejecución).
-__pycache__/ [cite: 30]
-
-# Bloquea las carpetas donde se instalan las librerías locales de Python (SQLAlchemy, Pandas, etc.).
-# Estas se reconstruyen mediante un archivo de requerimientos para optimizar el almacenamiento.
+# PYTHON Y ENTORNOS VIRTUALES
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
 venv/
-.venv/ 
 env/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
 
 # ARCHIVOS DEL SISTEMA OPERATIVO
-# Evita subir archivos ocultos de caché de miniaturas e indexación generados por Windows.
-Thumbs.db [cite: 32]
+Thumbs.db
 Desktop.ini
+.DS_Store

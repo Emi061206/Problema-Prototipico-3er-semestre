@@ -22,3 +22,5 @@ def registrar_productor(nombre_chinampa, coordenadas, cultivo_principal):
 if __name__ == "__main__":
     # Llama a la función con datos de ejemplo para probar el registro
     registrar_productor("Chinampa Piloto Prueba", "19.2635, -99.0945", "Lechuga Hidropónica")
+
+    

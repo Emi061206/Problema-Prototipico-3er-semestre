@@ -59,4 +59,3 @@ function mostrarAlerta(mensaje, tipo) {
 function enviarDatosBackend(email, password) {
     console.log('Datos listos para enviar vía Fetch API a PHP PDO'); // Log para desarrollo
 }
-}
