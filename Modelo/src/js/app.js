@@ -1,41 +1,53 @@
+// INICIALIZACIÓN DE LA APLICACIÓN
 // Espera a que el DOM esté completamente cargado antes de ejecutar el código
 document.addEventListener('DOMContentLoaded', () => {
-    iniciarApp(); // Llama a la función principal de la aplicación
+    iniciarApp();
 });
 
-// Función principal que inicializa la aplicación
+// FUNCIÓN PRINCIPAL DE INICIO
+// Llama a las funciones necesarias para inicializar la aplicación
 function iniciarApp() {
-    validarFormularioLogin(); // Configura la validación del formulario de login
+    validarFormularioLogin();
 }
 
-// Función que configura la validación del formulario de login
+// VALIDACIÓN DEL FORMULARIO DE LOGIN
+// Configura la validación del formulario de login en el lado del cliente
 function validarFormularioLogin() {
-    const formulario = document.querySelector('#formulario-login'); // Selecciona el formulario por ID
+    // Selecciona el formulario de login por su ID
+    const formulario = document.querySelector('#formulario-login');
 
-    if (formulario) { // Verifica que el formulario existe en la página
+    // Si el formulario existe en la página
+    if (formulario) {
+        // Añade un event listener para el evento 'submit'
         formulario.addEventListener('submit', function(e) {
-            e.preventDefault(); // Previene el envío por defecto del formulario
+            // Previene el envío automático del formulario
+            e.preventDefault();
 
-            // Obtiene y limpia los valores de los campos de entrada
+            // Obtiene los valores de los campos, eliminando espacios en blanco
             const email = document.querySelector('#email').value.trim();
             const password = document.querySelector('#password').value.trim();
 
-            // Valida que ambos campos estén completos
+            // VALIDACIÓN DE CAMPOS OBLIGATORIOS
+            // Verifica que ambos campos estén llenos
             if (email === '' || password === '') {
-                mostrarAlerta('Todos los campos son obligatorios', 'error'); // Muestra alerta de error
+                // Muestra una alerta de error si faltan campos
+                mostrarAlerta('Todos los campos son obligatorios', 'error');
                 return; // Detiene la ejecución
             }
 
-            enviarDatosBackend(email, password); // Envía los datos al backend
+            // Si la validación pasa, envía los datos al backend
+            enviarDatosBackend(email, password);
         });
     }
 }
 
-// Función para mostrar alertas al usuario
+// FUNCIÓN PARA MOSTRAR ALERTAS
+// Crea y muestra mensajes de alerta temporales en la interfaz
 function mostrarAlerta(mensaje, tipo) {
-    const alertaPrevia = document.querySelector('.alerta'); // Busca alertas previas
+    // Elimina cualquier alerta previa para evitar duplicados
+    const alertaPrevia = document.querySelector('.alerta');
     if (alertaPrevia) {
-        alertaPrevia.remove(); // Remueve alertas existentes
+        alertaPrevia.remove();
     }
 
     // Crea un nuevo elemento div para la alerta
@@ -43,19 +55,22 @@ function mostrarAlerta(mensaje, tipo) {
     divAlerta.textContent = mensaje; // Establece el mensaje
     divAlerta.classList.add('alerta', `alerta-${tipo}`); // Añade clases CSS
 
-    // Inserta la alerta al inicio del contenedor del formulario
-    const contenedorFormulario = document.querySelector('.tarjeta-login');
+    // Inserta la alerta al inicio de la sección del formulario
+    const contenedorFormulario = document.querySelector('.seccion-formulario');
     if (contenedorFormulario) {
         contenedorFormulario.insertBefore(divAlerta, contenedorFormulario.firstChild);
     }
 
-    // Remueve la alerta automáticamente después de 3 segundos
+    // PROGRAMACIÓN PARA OCULTAR LA ALERTA
+    // Elimina la alerta automáticamente después de 3 segundos
     setTimeout(() => {
         divAlerta.remove();
     }, 3000);
 }
 
-// Función para enviar datos al backend (preparada para Fetch API)
+// ENVÍO DE DATOS AL BACKEND
+// Maneja el envío de datos del formulario al servidor PHP
 function enviarDatosBackend(email, password) {
-    console.log('Datos listos para enviar vía Fetch API a PHP PDO'); // Log para desarrollo
+    // Realiza el envío del formulario (el backend PHP procesará los datos)
+    document.querySelector('#formulario-login').submit();
 }

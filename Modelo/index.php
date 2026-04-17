@@ -14,7 +14,7 @@ $nombre_agricultor = $usuario_autenticado ? htmlspecialchars($_SESSION['usuario_
 <body>
     <header class="encabezado-principal">
         <h1>ANÁLISIS TÉCNICO-ECONÓMICO PARA LA DIVERSIFICACIÓN DE CULTIVOS EN MÉXICO</h1>
-            <main class="contenedor-principal">
+        <main class="contenedor-principal">
         <nav class="menu-navegacion">
             <button class="btn-nav">ESTADÍSTICAS</button>
             <button class="btn-nav">DATOS DE CULTIVOS</button>
@@ -32,8 +32,9 @@ $nombre_agricultor = $usuario_autenticado ? htmlspecialchars($_SESSION['usuario_
     </main>
     </header>
 
-    <section class="hero-xochimilco">
-        </section>
+    
+
+    <section class="hero-xochimilco"></section>
 
 
 

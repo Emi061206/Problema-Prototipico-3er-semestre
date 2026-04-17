@@ -1,82 +1,73 @@
 <!DOCTYPE html>
-<!-- Declara el tipo de documento como HTML5 -->
 <html lang="es">
-<!-- Define el idioma de la página como español -->
 <head>
-    <!-- Contiene metadatos y enlaces a recursos externos -->
+    <!-- Declaración del tipo de documento HTML5 -->
+    <!-- Define el idioma de la página como español -->
     <meta charset="UTF-8">
-    <!-- Especifica la codificación de caracteres como UTF-8 -->
+    <!-- Especifica la codificación de caracteres UTF-8 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Configura la vista para dispositivos móviles -->
-    <title>Iniciar Sesión - Agricultores</title>
-    <!-- Título de la página que aparece en la pestaña del navegador -->
+    <!-- Configura la página para ser responsive en dispositivos móviles -->
+    <title>Iniciar Sesión - Smart Agroforestry</title>
+    <!-- Título que aparece en la pestaña del navegador -->
     <link rel="stylesheet" href="dist/css/app.css">
-    <!-- Enlaza la hoja de estilos CSS compilada -->
-    <style>
-        /* Estilos CSS internos para la alerta de error */
-        .alerta-error {
-            background-color: #f8d7da; /* Color de fondo rojo claro */
-            color: #721c24; /* Color de texto rojo oscuro */
-            padding: 10px; /* Espaciado interno */
-            margin-bottom: 15px; /* Margen inferior */
-            border: 1px solid #f5c6cb; /* Borde rojo claro */
-            border-radius: 4px; /* Bordes redondeados */
-            text-align: center; /* Texto centrado */
-            font-size: 0.9rem; /* Tamaño de fuente pequeño */
-        }
-    </style>
+    <!-- Importa el archivo CSS compilado con los estilos de la aplicación -->
 </head>
-<body class="pantalla-login">
-    <!-- Cuerpo de la página con clase para estilos -->
-    <main class="tarjeta-login">
-        <!-- Contenedor principal del formulario de login -->
-        <header class="login-header">
-            <!-- Encabezado del formulario -->
-            <h2>INICIAR SESIÓN</h2>
-            <!-- Título del formulario -->
-        </header>
-
-        <?php if (isset($_GET['error'])): ?>
-            <!-- Verifica si hay un parámetro 'error' en la URL (GET) -->
-            <div class="alerta-error">
-                <!-- Muestra una alerta de error si las credenciales son incorrectas -->
-                Correo o contraseña incorrectos. Por favor, intente de nuevo.
-            </div>
-        <?php endif; ?>
-
-        <form action="procesar_login.php" method="POST" id="formulario-login" class="formulario">
-            <!-- Formulario que envía datos a procesar_login.php mediante POST -->
-            <div class="formulario-grupo">
-                <!-- Grupo para el campo de correo -->
-                <label for="email">CORREO</label>
-                <!-- Etiqueta para el campo de entrada -->
-                <input type="email" id="email" name="correo" class="entrada-texto" placeholder="ejemplo@correo.com" required>
-                <!-- Campo de entrada para el correo electrónico, obligatorio -->
-            </div>
-
-            <div class="formulario-grupo">
-                <!-- Grupo para el campo de contraseña -->
-                <label for="password">CONTRASEÑA</label>
-                <!-- Etiqueta para el campo de entrada -->
-                <input type="password" id="password" name="password" class="entrada-texto" placeholder="********" required>
-                <!-- Campo de entrada para la contraseña, obligatorio -->
-            </div>
-
-            <div class="acciones-formulario">
-                <!-- Contenedor para el botón de envío -->
-                <button type="submit" class="btn-primario">INICIAR SESIÓN</button>
-                <!-- Botón para enviar el formulario -->
-            </div>
-        </form>
-
-        <div class="login-footer">
-            <!-- Pie del formulario con enlace de vuelta -->
-            <a href="index.php">← VOLVER AL INICIO</a>
-            <!-- Enlace para regresar a la página principal -->
+<!-- Inicia el cuerpo del documento con la clase 'pantalla-login-nueva' para estilos específicos -->
+<body class="pantalla-login-nueva">
+    <!-- Elemento principal de la página que contiene el layout en dos columnas -->
+    <main class="contenedor-split">
+        
+        <!-- SECCIÓN IZQUIERDA: Imagen decorativa -->
+        <div class="seccion-imagen">
+            <!-- Círculo decorativo con flores para visual atractivo -->
+            <div class="circulo-flores"></div>
         </div>
-    </main>
 
-    <!--<script src="dist/js/app.js"></script> -->
-    <!-- Enlaza el archivo JavaScript compilado -->
+        <!-- SECCIÓN DERECHA: Formulario de login -->
+        <div class="seccion-formulario">
+            <!-- Encabezado del formulario -->
+            <h2>Iniciar sesión</h2>
+
+            <!-- MENSAJE DE ERROR CONDICIONAL -->
+            <!-- Se muestra solo si existe parámetro 'error' en la URL (GET) -->
+            <!-- Esto ocurre cuando el login falla por credenciales incorrectas -->
+            <?php if (isset($_GET['error'])): ?>
+                <div class="alerta-error" style="background: rgba(255,0,0,0.2); border: 1px solid white; color: white; padding: 10px; margin-bottom: 15px; text-align: center; border-radius: 4px;">
+                    Correo o contraseña incorrectos.
+                </div>
+            <?php endif; ?>
+
+            <!-- FORMULARIO DE LOGIN -->
+            <!-- Método POST envía datos de forma segura al procesador de login -->
+            <!-- Action: Apunta al archivo 'procesar_login.php' que valida las credenciales -->
+            <form action="procesar_login.php" method="POST" id="formulario-login">
+                <!-- Campo de email -->
+                <!-- type="email": Valida el formato de email en navegadores modernos -->
+                <!-- required: Campo obligatorio, el formulario no se envía sin llenar -->
+                <div class="formulario-grupo">
+                    <input type="email" id="email" name="correo" class="entrada-transparente" placeholder="CORREO" required>
+                </div>
+
+                <!-- Campo de contraseña -->
+                <!-- type="password": Oculta los caracteres mientras se escriben -->
+                <!-- required: Campo obligatorio para enviar el formulario -->
+                <div class="formulario-grupo">
+                    <input type="password" id="password" name="password" class="entrada-transparente" placeholder="CONTRASEÑA" required>
+                </div>
+
+                <!-- Botón de envío -->
+                <!-- Al hacer clic, envía los datos POST a procesar_login.php -->
+                <button type="submit" class="btn-transparente">INICIAR SESIÓN</button>
+            </form>
+            <!-- Cierre del formulario de login -->
+        </div>
+        <!-- Cierre de la sección del formulario -->
+
+    </main>
+    <!-- Cierre del contenedor principal (split layout) -->
+
+    <!-- Importa el archivo JavaScript compilado para funcionalidad interactiva -->
+    <!-- Contiene lógica del cliente y manejo de eventos del formulario -->
+    <script src="dist/js/app.js"></script>
 </body>
 </html>
