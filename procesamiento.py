@@ -2,7 +2,7 @@ import pandas as pd
 
 def generar_resumen_estadistico(df):
     # Agrupa los datos por tipo de cultivo y calcula métricas descriptivas del precio rural
-    resumen = df.groupby('Nomcultivo')['Preciomediorural'].agg([
+    resumen = df.groupby('Nombre_Cultivo')['Precio_Medio_Rural'].agg([
         'mean',   # Obtiene el promedio histórico de precios por cultivo
         'min',    # Identifica el valor mínimo registrado por cultivo
         'max',    # Identifica el valor máximo registrado por cultivo

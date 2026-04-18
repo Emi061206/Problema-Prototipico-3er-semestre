@@ -22,23 +22,28 @@ def calcular_indicadores_icc():
     
     condiciones = [icc > 0.5, (icc >= 0) & (icc <= 0.5), icc < 0]
     decisiones = ["Altamente Viable", "Viabilidad Moderada", "No Viable"]
-    # Se especifica default como string para compatibilidad con NumPy 2.x (evita error de dtype mixto int/str)
+    
     decision_final = np.select(condiciones, decisiones, default='No Definido')
     
-    resultados_financieros = []
-    
-    for i in range(len(cultivos)):
-        registro = {
-            "nombre_cultivo": cultivos[i],
-            "precio_sostenible": round(precio_con_prima[i], 2),
-            "ingreso_proyectado": round(ingresos_esperados[i], 2),
-            "utilidad_neta": round(utilidad_neta[i], 2),
-            "indice_icc": round(icc[i], 2),
-            "recomendacion": decision_final[i],
-            "mes_ideal": meses[epoca_optima_idx[i]]
+    # Implementación Pythónica mediante comprensión de listas y zip
+    # Sustituye el ciclo for basado en índices para mayor eficiencia
+    resultados_financieros = [
+        {
+            "nombre_cultivo": c,
+            "precio_sostenible": round(p_p, 2),
+            "ingreso_proyectado": round(i_e, 2),
+            "utilidad_neta": round(u_n, 2),
+            "indice_icc": round(i_c, 2),
+            "recomendacion": d_f,
+            "mes_ideal": meses[idx]
         }
-        resultados_financieros.append(registro)
+        for c, p_p, i_e, u_n, i_c, d_f, idx in zip(
+            cultivos, precio_con_prima, ingresos_esperados, utilidad_neta, icc, decision_final, epoca_optima_idx
+        )
+    ]
         
     return resultados_financieros
 
-print(calcular_indicadores_icc())
+if __name__ == "__main__":
+    for resultado in calcular_indicadores_icc():
+        print(resultado)

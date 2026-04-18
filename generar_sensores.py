@@ -19,7 +19,7 @@ load_dotenv(ruta_env)
 usuario = os.getenv("DB_USER")
 contrasena = os.getenv("DB_PASSWORD")
 host = os.getenv("DB_HOST")
-bd = os.getenv("DB_NAME")
+bd = os.getenv("DB_NAME_AGRO") # Corregido para apuntar a la base de datos de smartagroforestry
 
 # Escapa caracteres especiales de la contraseña (ej: '@') para que no rompan el parseo de la URL de conexión
 contrasena_codificada = quote_plus(contrasena)
@@ -35,11 +35,13 @@ try:
     df_sensores = pd.read_csv(ruta_sensores_reales)
     # Convertimos la columna 'Fecha_Hora' a un formato datetime para asegurar compatibilidad en la base de datos
     df_sensores['Fecha_Hora'] = pd.to_datetime(df_sensores['Fecha_Hora'])
-    # Insertamos los datos del DataFrame en la tabla 'Sensores_IoT' de la base de datos
+    
+    # Insertamos los datos del DataFrame en la tabla 'lecturas_climaticas' de la base de datos
     # 'if_exists="append"' indica que si la tabla ya existe, debe agregar nuevos registros y no eliminar la tabla
     # 'index=False' evita que se agregue el índice del DataFrame (las filas 0, 1, 2...) como una columna en la tabla
-    df_sensores.to_sql(name='Sensores_IoT', con=engine, if_exists='append', index=False)
+    df_sensores.to_sql(name='lecturas_climaticas', con=engine, if_exists='append', index=False)
     print("Datos reales inyectados con éxito en la base de datos.")
+    
 except FileNotFoundError:
     # Este bloque maneja un error en caso de que el archivo CSV no exista en la ruta proporcionada
     print("El archivo de lecturas reales aún no existe. El sistema está en espera de la conexión de hardware.")

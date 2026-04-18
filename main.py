@@ -11,8 +11,8 @@ def iniciar_proceso():
     # el nombre del cultivo directamente; este reside en la tabla catalogo_cultivos.
     df_siap = pd.read_sql("""
         SELECT
-            c.Nombre_Cultivo  AS Nomcultivo,
-            h.Preciomediorural
+            c.Nombre_Cultivo,
+            h.Precio_Medio_Rural
         FROM historico_mercado h
         JOIN catalogo_cultivos c
           ON c.Historico_Mercado_ID_Registro = h.ID_Registro
