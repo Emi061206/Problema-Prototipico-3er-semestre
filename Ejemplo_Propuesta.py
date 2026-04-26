@@ -1,49 +1,43 @@
 import numpy as np
+import pandas as pd
 
-def calcular_indicadores_icc():
-    cultivos = ["Jitomate chery", "Albahaca", "Lechuga"]
+def evaluar_viabilidad_cultivos(cultivos, rendimiento, precio, costo, prima, temporalidad, riesgo):
+    precio_sostenible = precio * (1 + prima)
+    ingreso = rendimiento * precio_sostenible
+    utilidad = ingreso - costo
+    icc = utilidad * temporalidad * (1 - riesgo)
     
-    rendimiento = np.array([5000, 3000, 4000])
-    precio = np.array([20, 35, 12])
-    costo = np.array([60000, 40000, 35000])
-    prima = np.array([0.25, 0.20, 0.10])
-    temporalidad = np.array([1.1, 1.0, 0.9])
-    riesgo = np.array([0.2, 0.25, 0.3])
+    condiciones = [icc > 80000, icc > 40000]
+    decisiones = ["Conviene invertir", "Riesgo moderado"]
+    recomendacion = np.select(condiciones, decisiones, default="No conviene invertir")
     
-    meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
-             "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
-             
-    epoca_optima_idx = np.array([4, 2, 9])
+    resultados = pd.DataFrame({
+        'Cultivo': cultivos,
+        'Precio_Sost_($)': np.round(precio_sostenible, 2),
+        'Ingreso_Bruto_($)': np.round(ingreso, 2),
+        'Utilidad_Neta_($)': np.round(utilidad, 2),
+        'ICC': np.round(icc, 2),
+        'Decision_Algoritmica': recomendacion
+    })
     
-    precio_con_prima = precio * (1 + prima)
-    ingresos_esperados = rendimiento * precio_con_prima * temporalidad
-    utilidad_neta = ingresos_esperados - costo
-    icc = (utilidad_neta / costo) * (1 - riesgo)
-    
-    condiciones = [icc > 0.5, (icc >= 0) & (icc <= 0.5), icc < 0]
-    decisiones = ["Altamente Viable", "Viabilidad Moderada", "No Viable"]
-    
-    decision_final = np.select(condiciones, decisiones, default='No Definido')
-    
-    # Implementación Pythónica mediante comprensión de listas y zip
-    # Sustituye el ciclo for basado en índices para mayor eficiencia
-    resultados_financieros = [
-        {
-            "nombre_cultivo": c,
-            "precio_sostenible": round(p_p, 2),
-            "ingreso_proyectado": round(i_e, 2),
-            "utilidad_neta": round(u_n, 2),
-            "indice_icc": round(i_c, 2),
-            "recomendacion": d_f,
-            "mes_ideal": meses[idx]
-        }
-        for c, p_p, i_e, u_n, i_c, d_f, idx in zip(
-            cultivos, precio_con_prima, ingresos_esperados, utilidad_neta, icc, decision_final, epoca_optima_idx
-        )
-    ]
-        
-    return resultados_financieros
+    return resultados
 
-if __name__ == "__main__":
-    for resultado in calcular_indicadores_icc():
-        print(resultado)
+cultivos_morelos = np.array(["Aguacate Hass", "Zarzamora", "Jitomate Saladet"])
+rendimiento_kg = np.array([12000, 8000, 45000])
+precio_base = np.array([45, 80, 15])
+costo_operativo = np.array([150000, 200000, 120000])
+prima_sostenibilidad = np.array([0.15, 0.20, 0.10])
+factor_temporalidad = np.array([1.0, 1.1, 0.9])
+riesgo_probabilidad = np.array([0.15, 0.25, 0.30])
+
+reporte_financiero = evaluar_viabilidad_cultivos(
+    cultivos_morelos, 
+    rendimiento_kg, 
+    precio_base, 
+    costo_operativo, 
+    prima_sostenibilidad, 
+    factor_temporalidad, 
+    riesgo_probabilidad
+)
+
+print(reporte_financiero.to_string(index=False)) 

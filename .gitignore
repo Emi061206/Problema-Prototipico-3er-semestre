@@ -1,10 +1,9 @@
-# VARIABLES DE ENTORNO Y SEGURIDAD
+# SEGURIDAD Y VARIABLES DE ENTORNO
 .env
-generar_hash.php
 .env.local
 .env.*.local
 
-# ARCHIVOS DE DATOS (CIENCIA DE DATOS)
+# CIENCIA DE DATOS Y ARCHIVOS DE DATOS
 *.csv
 *.zip
 *.xlsx
@@ -13,20 +12,10 @@ generar_hash.php
 
 # RESPALDOS DE BASES DE DATOS
 *.sql
-bases de datos/
 
-# DIRECTORIOS ESPECÍFICOS DEL PROYECTO
+# DIRECTORIOS DE PROCESAMIENTO (DATOS LIMPIOS)
 "Limpieza de Datos/Datos Limpios/"
 "Liempeza de Datos/Datos Limpios/"
-
-# DEPENDENCIAS DE SOFTWARE
-node_modules/
-vendor/
-
-# ARCHIVOS COMPILADOS Y FRONTEND
-Modelo/dist/
-*.map
-.sass-cache/
 
 # PYTHON Y ENTORNOS VIRTUALES
 __pycache__/
@@ -37,15 +26,7 @@ venv/
 env/
 ENV/
 build/
-develop-eggs/
 dist/
-downloads/
-eggs/
-.eggs/
-parts/
-sdist/
-var/
-wheels/
 *.egg-info/
 .installed.cfg
 *.egg

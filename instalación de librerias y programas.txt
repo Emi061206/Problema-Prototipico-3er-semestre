@@ -1,99 +1,53 @@
-GUÍA DE INSTALACIÓN Y CONFIGURACIÓN PASO A PASO
-Proyecto: Smart Agroforestry - Monitoreo IoT en Xochimilco
-Programas y librerias a descargar 
+GUÍA DE INSTALACIÓN Y CONFIGURACIÓN (STACK MORELOS)
+Proyecto: Smart Agroforestry - Análisis de Diversificación Agrícola
+Enfoque: Ciencia de Datos, Modelado Financiero y Streamlit
 
-
-La siguiente guía detalla el proceso estandarizado para preparar el entorno de desarrollo local. Sigue los pasos en orden estricto para evitar conflictos de variables de entorno en la terminal.
+Esta guía detalla el proceso para preparar el entorno de desarrollo local optimizado para el análisis de microdatos del SIAP y la ejecución del panel interactivo.
 
 1. VISUAL STUDIO CODE (VS Code)
-Editor principal para manipular código PHP, JS, SQL y SCSS.
+Paso 1: Descargar desde code.visualstudio.com.
 
-• Paso 1: Ingresa a la página oficial: https://code.visualstudio.com/
-• Paso 2: Descarga el instalador "System Installer" (recomendado para Windows de 64 bits).
-• Paso 3: Ejecuta el archivo y acepta el acuerdo de licencia.
-• Paso 4: En la pantalla "Seleccione Tareas Adicionales", es CRÍTICO marcar:
-  - "Agregar la acción 'Abrir con Code' al menú contextual".
-  - "Agregar al PATH (requiere reiniciar el equipo)".
-• Paso 5: Haz clic en "Instalar" y luego en "Finalizar".
+Paso 2: Instalar marcando la opción "Agregar al PATH".
 
-2. ENTORNO DE ANÁLISIS DE DATOS Y SENSORES (PYTHON)
-Requerido para la limpieza de datos, análisis estadístico y posible modelado predictivo de la información recolectada por el hardware.
+Paso 3: Instalar las extensiones: Python (Microsoft) y MySQL (Weijan Chen).
 
-• Paso 1: Ingresa a la página oficial: https://www.python.org/downloads/
-• Paso 2: Descarga la versión estable más reciente (recomendado 3.10 o superior).
-• Paso 3: Ejecuta el instalador. Es CRÍTICO marcar la casilla inferior "Add Python to PATH" antes de hacer clic en "Install Now".
-• Paso 4: Abre una nueva terminal en VS Code y verifica la instalación:
-  python --version
-  pip --version
-• Paso 5: Instala el stack de librerías ejecutando el siguiente comando:
-  pip install pandas numpy matplotlib seaborn scikit-learn mysql-connector-python python-dotenv requests
+2. ENTORNO DE DESARROLLO (PYTHON 3.10+)
+Paso 1: Descargar la versión más reciente en python.org.
 
-Resumen de las dependencias instaladas:
-- pandas y numpy: Manipulación, limpieza y estructuración funcional de los datos de las métricas.
-- mysql-connector-python: Conector oficial para enlazar los scripts analíticos con la base de datos MySQL.
-- python-dotenv: Permite leer el archivo .env en Python para proteger las credenciales de la base de datos, manteniendo la misma arquitectura de seguridad que en PHP.
-- matplotlib y seaborn: Generación de reportes gráficos y visualización de series de tiempo.
-- scikit-learn: Herramientas de machine learning para el desarrollo de modelos predictivos.
-- requests: Manejo de peticiones HTTP, útil para capturar o simular la ingesta de datos provenientes de la red de sensores.
+Paso 2: CRÍTICO: Marcar la casilla "Add Python to PATH" durante la instalación.
 
+Paso 3: Verificar en terminal con: python --version.
 
-3. GIT (Control de Versiones)
-Necesario para clonar el repositorio y sincronizar el avance del equipo.
+3. BASE DE DATOS (MYSQL)
+Paso 1: Descargar e instalar MySQL Community Server.
 
-• Paso 1: Ingresa a la página oficial: https://git-scm.com/downloads
-• Paso 2: Descarga la versión "64-bit Git for Windows Setup".
-• Paso 3: Ejecuta el instalador. Mantén las opciones por defecto excepto:
-  - "Choosing the default editor": Selecciona "Use Visual Studio Code as Git's default editor".
-  - "Initial branch in new repositories": Selecciona "Override default branch name" y escribe "main".
-• Paso 4: Finaliza la instalación.
+Paso 2: Configurar el usuario root y la contraseña (asegúrate de que coincidan con tu archivo .env).
 
+Paso 3: Ejecutar el script sistema_agricola_morelos.sql para crear la estructura del Data Warehouse.
 
-4. PHP (Entorno de Servidor Backend)
-Motor necesario para procesar la lógica de inicio de sesión y la conexión PDO a MySQL.
+4. LIBRERÍAS DE CIENCIA DE DATOS Y STREAMLIT
+Abre la terminal de VS Code y ejecuta el siguiente comando para instalar todas las dependencias necesarias:
 
-• Paso 1: Ingresa a https://windows.php.net/download/
-• Paso 2: Descarga el archivo ZIP de la versión "Thread Safe" (VS16 x64 Thread Safe).
-• Paso 3: Crea una carpeta llamada "php" en la raíz de tu disco duro (C:\php) y extrae todo el contenido del ZIP allí.
-• Paso 4: Configura la variable de entorno:
-  - Presiona la tecla Windows, escribe "Variables de entorno" y presiona Enter.
-  - Haz clic en "Variables de entorno...".
-  - En "Variables del sistema", busca "Path", selecciónala y dale a "Editar".
-  - Haz clic en "Nuevo", escribe C:\php y dale a "Aceptar" en todas las ventanas.
-• Paso 5: Configura el archivo php.ini:
-  - Ve a C:\php, busca el archivo "php.ini-development" y renómbralo a "php.ini".
-  - Ábrelo con el bloc de notas o VS Code.
-  - Busca la línea: ;extension_dir = "ext" y quítale el punto y coma inicial.
-  - Busca la línea: ;extension=pdo_mysql y quítale el punto y coma inicial (crítico para la base de datos).
-  - Guarda el archivo.
-• Paso 6: Abre una nueva terminal y verifica la instalación ejecutando: php -v
+pip install pandas numpy sqlalchemy pymysql streamlit python-dotenv scipy
+pandas/numpy: Procesamiento de los archivos CSV del SIAP.
 
+sqlalchemy/pymysql: Conexión robusta con la base de datos MySQL.
 
-5. NODE.JS y NPM (Gestor de Paquetes)
-Obligatorio para instalar el compilador de Sass.
+streamlit: Generación del panel web interactivo.
 
-• Paso 1: Ingresa a la página oficial: https://nodejs.org/es/
-• Paso 2: Descarga la versión LTS (Long Term Support).
-• Paso 3: Ejecuta el instalador y presiona "Next".
-• Paso 4: En "Custom Setup", verifica que "npm package manager" y "Add to PATH" estén habilitados.
-• Paso 5: Termina la instalación. Verifica en terminal con: node -v
+python-dotenv: Gestión segura de credenciales de base de datos.
 
+scipy: Ejecución de cálculos para integrales y modelos probabilísticos.
 
-6. SASS (Preprocesador CSS)
-Requerido para compilar el diseño visual de la interfaz.
+INSTRUCCIONES DE INICIO RÁPIDO
+Configuración: Asegúrate de tener el archivo .env en la raíz con tus credenciales de MySQL.
 
-• Paso 1: Abre la terminal de VS Code (Ctrl + Shift + ñ).
-• Paso 2: Instala Sass globalmente ejecutando:
-  npm install -g sass
-• Paso 3: Verifica la instalación con:
-  sass --version
+Datos: El archivo Historico_Morelos_Focalizado.csv debe estar en la misma carpeta que los scripts.
 
+Ejecución: Para iniciar el panel de control, usa el comando:
 
-#INSTRUCCIONES DE INICIO RÁPIDO PARA EL PROYECTO
+streamlit run app.py
 
-1. Clona el repositorio: git clone [URL_DEL_REPOSITORIO]
-2. Crea tu archivo .env local en la carpeta raíz.
-3. Asegúrate de tener tu servidor MySQL independiente en ejecución.
-4. Compila los estilos (deja esta terminal abierta): sass src/scss/app.scss dist/css/app.css --watch
-5. Abre una nueva terminal y levanta el servidor PHP: php -S localhost:8000
-6. Abre en tu navegador: http://localhost:8000/index.php (este último en caso de estar en una subcarpeta quedaría así: php -S localhost:3000 -t El_nombre_de_la_subcarpeta_en_donde_se_encuentre_el_proyecto_de_php/)
+En caso de que no funcione el comando anterior, puedes intentar con:
 
+python -m streamlit run app.py
