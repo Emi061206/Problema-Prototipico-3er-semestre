@@ -1,53 +1,65 @@
-GUÍA DE INSTALACIÓN Y CONFIGURACIÓN (STACK MORELOS)
-Proyecto: Smart Agroforestry - Análisis de Diversificación Agrícola
-Enfoque: Ciencia de Datos, Modelado Financiero y Streamlit
+GUIA DE INSTALACION Y CONFIGURACION (SISTEMA SMART AGROFORESTRY MORELOS)
+Proyecto: Smart Agroforestry - Analisis de Diversificacion Agricola
+Enfoque: Ciencia de Datos, Inteligencia de Mercado y Streamlit
 
-Esta guía detalla el proceso para preparar el entorno de desarrollo local optimizado para el análisis de microdatos del SIAP y la ejecución del panel interactivo.
+Esta guia detalla el proceso para preparar el entorno de desarrollo local optimizado para la ejecucion del panel interactivo y el motor de inversion estacional.
 
 1. VISUAL STUDIO CODE (VS Code)
-Paso 1: Descargar desde code.visualstudio.com.
-
-Paso 2: Instalar marcando la opción "Agregar al PATH".
-
-Paso 3: Instalar las extensiones: Python (Microsoft) y MySQL (Weijan Chen).
+- Paso 1: Descargar desde code.visualstudio.com.
+- Paso 2: Instalar marcando la opcion "Agregar al PATH".
+- Paso 3: Instalar las extensiones: Python (Microsoft) y MySQL (Weijan Chen).
 
 2. ENTORNO DE DESARROLLO (PYTHON 3.10+)
-Paso 1: Descargar la versión más reciente en python.org.
-
-Paso 2: CRÍTICO: Marcar la casilla "Add Python to PATH" durante la instalación.
-
-Paso 3: Verificar en terminal con: python --version.
+- Paso 1: Descargar la version mas reciente en python.org.
+- Paso 2: CRITICO: Marcar la casilla "Add Python to PATH" durante la instalacion.
+- Paso 3: Verificar en terminal con el comando: python --version.
 
 3. BASE DE DATOS (MYSQL)
-Paso 1: Descargar e instalar MySQL Community Server.
+- Paso 1: Descargar e instalar MySQL Community Server.
+- Paso 2: Configurar el usuario root y la contrasenia (asegurate de que coincidan con tu archivo .env).
+- Paso 3: Ejecutar el script sistema_agricola_morelos.sql para crear la estructura del Data Warehouse.
+- Paso 4: Asegurarse de que el servicio de MySQL este activo antes de ejecutar el dashboard.
 
-Paso 2: Configurar el usuario root y la contraseña (asegúrate de que coincidan con tu archivo .env).
+4. LIBRERIAS DE CIENCIA DE DATOS Y VISUALIZACION
+Abre la terminal de VS Code y ejecuta el siguiente comando para instalar todas las dependencias:
 
-Paso 3: Ejecutar el script sistema_agricola_morelos.sql para crear la estructura del Data Warehouse.
+pip install pandas numpy sqlalchemy pymysql streamlit python-dotenv scipy plotly
 
-4. LIBRERÍAS DE CIENCIA DE DATOS Y STREAMLIT
-Abre la terminal de VS Code y ejecuta el siguiente comando para instalar todas las dependencias necesarias:
+- pandas/numpy: Procesamiento vectorizado de microdatos del SIAP.
+- sqlalchemy/pymysql: Conexion y consultas al catalogo financiero de SQL.
+- streamlit: Framework de la interfaz de usuario interactiva.
+- plotly: Generacion de graficos de competitividad y tendencia minimalistas.
+- python-dotenv: Gestion de credenciales de base de datos.
+- scipy: Calculos estadisticos avanzados.
 
-pip install pandas numpy sqlalchemy pymysql streamlit python-dotenv scipy
-pandas/numpy: Procesamiento de los archivos CSV del SIAP.
+5. ESTRUCTURA DE ARCHIVOS REQUERIDA
+Para que las rutas dinamicas funcionen, el directorio debe estar organizado asi:
 
-sqlalchemy/pymysql: Conexión robusta con la base de datos MySQL.
+[CARPETA RAIZ DEL PROYECTO]
+|-- app.py                       (Script principal del Dashboard)
+|-- 03_modelo_inversion.py       (Motor de estacionalidad y mercado)
+|-- database.py                  (Logica de conexion a SQL)
+|-- .env                         (Variables de entorno con tus claves)
+|-- [Liempeza de Datos]          (Carpeta de datos)
+    |-- [Datos Limpios]
+        |-- Historico_Morelos_Focalizado.csv
 
-streamlit: Generación del panel web interactivo.
+6. CONFIGURACION INICIAL DE GIT (CONTROL DE VERSIONES)
+Si es la primera vez que usas Git en el equipo o aparece el error "Author identity unknown", ejecuta los siguientes comandos en la terminal:
 
-python-dotenv: Gestión segura de credenciales de base de datos.
+git config --global user.email "tu_correo@ejemplo.com"
+git config --global user.name "Carlos Emiliano Gonzalez Lopez"
 
-scipy: Ejecución de cálculos para integrales y modelos probabilísticos.
+*Nota: Usa el correo asociado a tu cuenta de GitHub/GitLab para mantener la vinculacion de tus contribuciones.*
 
-INSTRUCCIONES DE INICIO RÁPIDO
-Configuración: Asegúrate de tener el archivo .env en la raíz con tus credenciales de MySQL.
+7. CONFIGURACION DEL ARCHIVO .ENV
+Crea un archivo llamado .env en la raiz con el siguiente formato:
+DB_HOST=localhost
+DB_USER=tu_usuario
+DB_PASSWORD=tu_contrasenia
+DB_NAME=sistema_agricola_morelos
 
-Datos: El archivo Historico_Morelos_Focalizado.csv debe estar en la misma carpeta que los scripts.
-
-Ejecución: Para iniciar el panel de control, usa el comando:
-
-streamlit run app.py
-
-En caso de que no funcione el comando anterior, puedes intentar con:
-
-python -m streamlit run app.py
+8. INSTRUCCIONES DE INICIO
+- Paso 1: Abre la terminal en la carpeta raiz del proyecto.
+- Paso 2: Ejecuta el comando: streamlit run app.py
+- Paso 3: El sistema abrira automaticamente el navegador con el dashboard.
