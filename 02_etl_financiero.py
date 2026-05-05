@@ -8,6 +8,7 @@ import mysql.connector
 # Definición funcional estricta: se conecta, lee la tabla y retorna una estructura Pandas pura.
 def extraer_datos_financieros() -> pd.DataFrame:
     # Cadena que contiene la instrucción SQL de lectura masiva (Data Query Language).
+    # Se asume la futura integración de columnas de inversión en el esquema relacional.
     query = "SELECT * FROM catalogo_cultivos"
     
     # Manejador de contexto que levanta la conexión y garantiza el cierre del puerto al terminar.
@@ -31,8 +32,15 @@ def evaluar_viabilidad_cultivos(df: pd.DataFrame) -> pd.DataFrame:
     # Cálculo de la facturación bruta proyectada multiplicando el volumen por el nuevo precio.
     ingreso = df['rendimiento_kg_esperado'] * precio_sostenible
     
-    # Determinación del margen financiero descontando la inversión inicial y operativa.
-    utilidad = ingreso - df['costo_operativo']
+    # Cálculo del IVA acreditable (16%) sobre infraestructura para inyectarlo como recuperación de liquidez.
+    # Se usa .get para evitar bloqueos si la columna 'inversion_infraestructura' aún no se migra al SQL.
+    iva_acreditable = df.get('inversion_infraestructura', 0) * 0.16
+    
+    # Evaluación fiscal (Régimen AGAPES): Exención de ISR si el ingreso anual es menor a 900,000 MXN.
+    exento_isr = np.where(ingreso < 900000, "Exento (Art. 74)", "Gravado (Tasa General)")
+    
+    # Determinación del margen financiero descontando la inversión operativa y sumando la devolución de IVA.
+    utilidad = ingreso - df['costo_operativo'] + iva_acreditable
     
     # Generación de una matriz de la misma longitud del catálogo, llenada de "unos" para neutralidad de temporada.
     temporalidad_simulada = np.ones(len(df))
@@ -55,6 +63,10 @@ def evaluar_viabilidad_cultivos(df: pd.DataFrame) -> pd.DataFrame:
         'Cultivo': df['nombre_cultivo'],
         # Se redondea matemáticamente el índice a dos cifras decimales para reportes contables.
         'ICC': np.round(icc, 2),
+        # Inyección de la variable fiscal para evidenciar el escudo fiscal del productor.
+        'IVA_Acreditable_MXN': np.round(iva_acreditable, 2),
+        # Clasificación tributaria procesada de forma vectorizada.
+        'Estatus_ISR': exento_isr,
         # Se adjunta el resultado del árbol de decisiones algorítmico.
         'Decision_Algoritmica': recomendacion
     })

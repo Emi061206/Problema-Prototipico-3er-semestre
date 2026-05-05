@@ -4,9 +4,12 @@ import matplotlib.pyplot as plt
 from scipy import integrate
 from mpl_toolkits.mplot3d import Axes3D
 
-# Funciones de utilidad para cada cultivo en función de superficie y tecnificación hídrica.
-func_utilidad_maiz = lambda y, x: 16.5 - 0.5 * x - 0.2 * y
-func_utilidad_higo = lambda y, x: 120 - 0.8 * x - 0.1 * y
+# Funciones de utilidad para cada cultivo en función de superficie y tecnificación hídrica (Cifras en miles de MXN).
+# Maíz: Ingreso (16.548*x) - Costos Fijos (19.8) - Costos Variables (12.257*x) - Penalización hídrica lineal (0.2*y)
+func_utilidad_maiz = lambda y, x: (16.548 * x) - (19.8 + 12.257 * x) - (0.2 * y)
+
+# Higo: Ingreso (238.659*x) - Costos Fijos (29.2) - Costos Variables (17.8*x) - Penalización hídrica cuadrática (0.1*(y**2))
+func_utilidad_higo = lambda y, x: (238.659 * x) - (29.2 + 17.8 * x) - (0.1 * (y**2))
 
 # Límites de integración que delimitan el dominio de superficie y tecnificación para el análisis.
 lim_x_inf, lim_x_sup = 0, 5
@@ -32,7 +35,7 @@ ax1.set_title("Superficie de Utilidad Acumulada: Maíz")
 ax1.set_xlabel("Superficie (Hectáreas)")
 ax1.set_ylabel("Nivel de Tecnificación Hídrica")
 ax1.set_zlabel("Utilidad Unitaria (Miles MXN)")
-ax1.set_zlim(0, 130)
+ax1.set_zlim(-30, 20)
 
 ax2 = fig.add_subplot(1, 2, 2, projection='3d')
 ax2.plot_surface(X, Y, Z_higo, cmap='Tealgrn', alpha=0.9, edgecolor='none')
@@ -40,7 +43,7 @@ ax2.set_title("Superficie de Utilidad Acumulada: Higo")
 ax2.set_xlabel("Superficie (Hectáreas)")
 ax2.set_ylabel("Nivel de Tecnificación Hídrica")
 ax2.set_zlabel("Utilidad Unitaria (Miles MXN)")
-ax2.set_zlim(0, 130)
+ax2.set_zlim(-50, 1100)
 
 plt.tight_layout()
 plt.show()
