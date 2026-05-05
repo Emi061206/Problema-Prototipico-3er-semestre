@@ -18,4 +18,4 @@ def generar_resumen_estadistico(df):
         'Registros_Historicos' # Número de registros disponibles
     ]
     
-    return resumen  # Retorna el DataFrame con el resumen estadístico
+    return resumen  # Retorna el DataFrame con el resumen estadístico+¿´+}
