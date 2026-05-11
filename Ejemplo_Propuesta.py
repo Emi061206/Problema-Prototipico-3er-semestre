@@ -111,4 +111,4 @@ reporte_financiero = evaluar_viabilidad_cultivos(
 )
 
 # Imprime el reporte completo en consola sin mostrar el índice numérico de filas
-print(reporte_financiero.to_string(index=False))
+print(reporte_financiero.to_string(index=False))
