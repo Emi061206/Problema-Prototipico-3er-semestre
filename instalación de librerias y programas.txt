@@ -1,65 +1,59 @@
 GUIA DE INSTALACION Y CONFIGURACION (SISTEMA SMART AGROFORESTRY MORELOS)
 Proyecto: Smart Agroforestry - Analisis de Diversificacion Agricola
-Enfoque: Ciencia de Datos, Inteligencia de Mercado y Streamlit
+Enfoque: Ciencia de Datos, Inteligencia de Mercado y Analisis Contable
 
-Esta guia detalla el proceso para preparar el entorno de desarrollo local optimizado para la ejecucion del panel interactivo y el motor de inversion estacional.
+Esta guia detalla el proceso para preparar el entorno de desarrollo local optimizado para la ejecucion del panel interactivo, el motor de inversion y la generacion de reportes ejecutivos.
 
 1. VISUAL STUDIO CODE (VS Code)
-- Paso 1: Descargar desde code.visualstudio.com.
-- Paso 2: Instalar marcando la opcion "Agregar al PATH".
-- Paso 3: Instalar las extensiones: Python (Microsoft) y MySQL (Weijan Chen).
+* Descargar desde code.visualstudio.com.
+* Instalar marcando la opcion "Agregar al PATH".
+* Instalar extensiones: Python (Microsoft) y MySQL (Weijan Chen).
 
 2. ENTORNO DE DESARROLLO (PYTHON 3.10+)
-- Paso 1: Descargar la version mas reciente en python.org.
-- Paso 2: CRITICO: Marcar la casilla "Add Python to PATH" durante la instalacion.
-- Paso 3: Verificar en terminal con el comando: python --version.
+* Descargar la version mas reciente en python.org e instalar.
+* CRITICO: Marcar la casilla "Add Python to PATH".
+* Verificar en terminal con: python --version.
 
 3. BASE DE DATOS (MYSQL)
-- Paso 1: Descargar e instalar MySQL Community Server.
-- Paso 2: Configurar el usuario root y la contrasenia (asegurate de que coincidan con tu archivo .env).
-- Paso 3: Ejecutar el script sistema_agricola_morelos.sql para crear la estructura del Data Warehouse.
-- Paso 4: Asegurarse de que el servicio de MySQL este activo antes de ejecutar el dashboard.
+* Instalar MySQL Community Server y configurar el usuario root.
+* Cargar el archivo "sistema_agricola_morelos.sql".
+* IMPORTANTE: Ejecutar el parche de actualizacion para el CAPEX de $147,000.00 y el OPEX auditado de $105,100.00 para asegurar coherencia con el modelo de 100 m2.
 
 4. LIBRERIAS DE CIENCIA DE DATOS Y VISUALIZACION
-Abre la terminal de VS Code y ejecuta el siguiente comando para instalar todas las dependencias:
+Instalar via terminal con el comando:
+pip install streamlit pandas numpy plotly mysql-connector-python sqlalchemy pymysql python-dotenv scipy fpdf2
 
-pip install pandas numpy sqlalchemy pymysql streamlit python-dotenv scipy plotly
+* fpdf2: Requerida para la generacion automatica del Reporte Tecnico para el agricultor en formato PDF.
+* scipy: Necesaria para las integrales dobles y el calculo de superficies de utilidad.
+* plotly: Para el renderizado de la topografia 3D de rentabilidad.
 
-- pandas/numpy: Procesamiento vectorizado de microdatos del SIAP.
-- sqlalchemy/pymysql: Conexion y consultas al catalogo financiero de SQL.
-- streamlit: Framework de la interfaz de usuario interactiva.
-- plotly: Generacion de graficos de competitividad y tendencia minimalistas.
-- python-dotenv: Gestion de credenciales de base de datos.
-- scipy: Calculos estadisticos avanzados.
-
-5. ESTRUCTURA DE ARCHIVOS REQUERIDA
-Para que las rutas dinamicas funcionen, el directorio debe estar organizado asi:
+5. ESTRUCTURA FINAL DEL REPOSITORIO
+El directorio debe estar organizado de la siguiente forma para el correcto funcionamiento de las rutas:
 
 [CARPETA RAIZ DEL PROYECTO]
-|-- app.py                       (Script principal del Dashboard)
-|-- 03_modelo_inversion.py       (Motor de estacionalidad y mercado)
-|-- database.py                  (Logica de conexion a SQL)
-|-- .env                         (Variables de entorno con tus claves)
-|-- [Liempeza de Datos]          (Carpeta de datos)
+|-- app.py                       (Dashboard principal y generador de reportes)
+|-- 02_etl_financiero.py         (Procesamiento de datos y calculo de IVA)
+|-- 03_modelo_inversion.py       (Analisis de CAPEX y dictamen de mercado)
+|-- 04_validacion_matematica.py  (Modelado de superficies e integrales dobles)
+|-- 05_simulacion_montecarlo.py  (Motor de prediccion estocastica)
+|-- database.py                  (Logica de conexion a MySQL)
+|-- .env                         (Variables de entorno: DB_USER, DB_PASSWORD, etc.)
+|-- sistema_agricola_morelos.sql (Esquema de base de datos actualizado)
+|-- [Liempeza de Datos]
     |-- [Datos Limpios]
         |-- Historico_Morelos_Focalizado.csv
+|-- [Imagenes]                   (Almacen de graficas para el reporte y LaTeX)
 
-6. CONFIGURACION INICIAL DE GIT (CONTROL DE VERSIONES)
-Si es la primera vez que usas Git en el equipo o aparece el error "Author identity unknown", ejecuta los siguientes comandos en la terminal:
-
-git config --global user.email "tu_correo@ejemplo.com"
-git config --global user.name "Carlos Emiliano Gonzalez Lopez"
-
-*Nota: Usa el correo asociado a tu cuenta de GitHub/GitLab para mantener la vinculacion de tus contribuciones.*
-
-7. CONFIGURACION DEL ARCHIVO .ENV
-Crea un archivo llamado .env en la raiz con el siguiente formato:
+6. CONFIGURACION DEL ARCHIVO .ENV
+Crea un archivo llamado .env en la raiz con tus credenciales locales:
 DB_HOST=localhost
-DB_USER=tu_usuario
+DB_USER=root
 DB_PASSWORD=tu_contrasenia
 DB_NAME=sistema_agricola_morelos
+DB_PORT=3306
 
-8. INSTRUCCIONES DE INICIO
-- Paso 1: Abre la terminal en la carpeta raiz del proyecto.
-- Paso 2: Ejecuta el comando: streamlit run app.py
-- Paso 3: El sistema abrira automaticamente el navegador con el dashboard.
+7. INSTRUCCIONES DE EJECUCION
+Para iniciar el sistema analitico completo, abre la terminal en la carpeta raiz y ejecuta:
+streamlit run app.py
+
+* Una vez en la interfaz, selecciona el municipio para recalibrar los factores edafologicos y usa el boton de la barra lateral para exportar el reporte PDF.
