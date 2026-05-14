@@ -9,51 +9,34 @@ Esta guia detalla el proceso para preparar el entorno de desarrollo local optimi
 * Instalar marcando la opcion "Agregar al PATH".
 * Instalar extensiones: Python (Microsoft) y MySQL (Weijan Chen).
 
-2. ENTORNO DE DESARROLLO (PYTHON 3.10+)
-* Descargar la version mas reciente en python.org e instalar.
-* CRITICO: Marcar la casilla "Add Python to PATH".
-* Verificar en terminal con: python --version.
+### 2. Guía de Instalación (Actualizada)
 
-3. BASE DE DATOS (MYSQL)
-* Instalar MySQL Community Server y configurar el usuario root.
-* Cargar el archivo "sistema_agricola_morelos.sql".
-* IMPORTANTE: Ejecutar el parche de actualizacion para el CAPEX de $147,000.00 y el OPEX auditado de $105,100.00 para asegurar coherencia con el modelo de 100 m2.
+```text
+GUIA DE INSTALACION Y CONFIGURACION (SISTEMA SMART AGROFORESTRY MORELOS)
+Proyecto: Smart Agroforestry - Analisis de Diversificacion Agricola (Version Dash)
 
-4. LIBRERIAS DE CIENCIA DE DATOS Y VISUALIZACION
-Instalar via terminal con el comando:
-pip install streamlit pandas numpy plotly mysql-connector-python sqlalchemy pymysql python-dotenv scipy fpdf2
+1. ENTORNO DE DESARROLLO (PYTHON 3.10+)
+- Descargar la version mas reciente en python.org.
+- CRITICO: Marcar la casilla "Add Python to PATH" durante la instalacion.
 
-* fpdf2: Requerida para la generacion automatica del Reporte Tecnico para el agricultor en formato PDF.
-* scipy: Necesaria para las integrales dobles y el calculo de superficies de utilidad.
-* plotly: Para el renderizado de la topografia 3D de rentabilidad.
+2. BASE DE DATOS (MYSQL)
+- Cargar el archivo "sistema_agricola_morelos.sql".
+- Asegurar que la tabla "catalogo_cultivos" refleje la inversion inicial de $147,000.00.
 
-5. ESTRUCTURA FINAL DEL REPOSITORIO
-El directorio debe estar organizado de la siguiente forma para el correcto funcionamiento de las rutas:
+3. INSTALACION DE LIBRERIAS
+Ejecutar el siguiente comando en la terminal para instalar el motor grafico y financiero:
 
-[CARPETA RAIZ DEL PROYECTO]
-|-- app.py                       (Dashboard principal y generador de reportes)
-|-- 02_etl_financiero.py         (Procesamiento de datos y calculo de IVA)
-|-- 03_modelo_inversion.py       (Analisis de CAPEX y dictamen de mercado)
-|-- 04_validacion_matematica.py  (Modelado de superficies e integrales dobles)
-|-- 05_simulacion_montecarlo.py  (Motor de prediccion estocastica)
-|-- database.py                  (Logica de conexion a MySQL)
-|-- .env                         (Variables de entorno: DB_USER, DB_PASSWORD, etc.)
-|-- sistema_agricola_morelos.sql (Esquema de base de datos actualizado)
-|-- [Liempeza de Datos]
-    |-- [Datos Limpios]
-        |-- Historico_Morelos_Focalizado.csv
-|-- [Imagenes]                   (Almacen de graficas para el reporte y LaTeX)
+pip install dash dash-bootstrap-components pandas numpy plotly reportlab scipy python-dotenv mysql-connector-python
 
-6. CONFIGURACION DEL ARCHIVO .ENV
-Crea un archivo llamado .env en la raiz con tus credenciales locales:
+4. CONFIGURACION DEL ARCHIVO .ENV
+Crear un archivo .env en la raiz con el siguiente formato:
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=tu_contrasenia
 DB_NAME=sistema_agricola_morelos
 DB_PORT=3306
 
-7. INSTRUCCIONES DE EJECUCION
-Para iniciar el sistema analitico completo, abre la terminal en la carpeta raiz y ejecuta:
-streamlit run app.py
-
-* Una vez en la interfaz, selecciona el municipio para recalibrar los factores edafologicos y usa el boton de la barra lateral para exportar el reporte PDF.
+5. ESTRUCTURA DEL REPOSITORIO
+- app.py: Aplicacion principal (Dash) y Callbacks reactivos.
+- motor_financiero.py: Logica de punto de equilibrio y generador PDF.
+- Historico_Morelos_Focalizado.csv: Microdatos agricolas 2018-2024.
