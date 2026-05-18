@@ -401,7 +401,7 @@ def render_tab(tab, municipio, mes, anio_range, hidro_val):
         fig_pe.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font_color='#fff', coloraxis_showscale=False, height=280)
         
         mb_h = FENOLOGICA['Higo'].get(mes, 1.0)
-        pf_h = np.random.normal(PRECIO_BASE['Higo']*mb_h, PRECIO_BASE['Higo'].get('Higo', 34994.18)*0.12*max(mb_h, 0.1), 5000)
+        pf_h = np.random.normal(PRECIO_BASE['Higo']*mb_h, PRECIO_BASE.get('Higo', 34994.18)*0.12*max(mb_h, 0.1), 5000)
         utils_h = (6.82*mr*mb_h)*(pf_h*1.15) - 105100*mc
         if hidro: utils_h += 59500.0
         fig_hist = go.Figure([go.Histogram(x=utils_h*(1-0.08*mk), nbinsx=60, marker_color=CYAN, opacity=0.8)])
