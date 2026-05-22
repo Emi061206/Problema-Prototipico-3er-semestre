@@ -28,6 +28,9 @@ Ejecutar el siguiente comando en la terminal para instalar el motor grafico y fi
 
 pip install dash dash-bootstrap-components pandas numpy plotly reportlab scipy python-dotenv mysql-connector-python
 
+para ejecutar el archivo es con el siguiente comando mediante la terminal:
+python app.py
+
 4. CONFIGURACION DEL ARCHIVO .ENV
 Crear un archivo .env en la raiz con el siguiente formato:
 DB_HOST=localhost

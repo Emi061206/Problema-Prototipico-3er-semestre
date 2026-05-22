@@ -158,11 +158,12 @@ def generar_pdf_reporte(municipio, mes, mod_rend, mod_costo, pe_higo, icc_higo, 
     ss = getSampleStyleSheet()
     
     estilos = {
-        'titulo': ParagraphStyle('titulo', parent=ss['Heading1'], fontSize=16, textColor=colors.HexColor('#003366'), spaceAfter=6),
-        'subtit': ParagraphStyle('subtit', parent=ss['Heading2'], fontSize=12, textColor=colors.HexColor('#005b99'), spaceAfter=4),
-        'body':   ParagraphStyle('body', parent=ss['Normal'], fontSize=9, leading=13),
-        'bold':   ParagraphStyle('bold', parent=ss['Normal'], fontSize=9, textColor=colors.HexColor('#003366'), fontName='Helvetica-Bold'),
-        'footer': ParagraphStyle('footer', parent=ss['Normal'], fontSize=7, textColor=colors.grey, alignment=1)
+        'titulo': ParagraphStyle('titulo', parent=ss['Heading1'], fontSize=14, textColor=colors.HexColor('#003366'), spaceAfter=8, alignment=1),
+        'seccion': ParagraphStyle('seccion', parent=ss['Heading2'], fontSize=12, textColor=colors.HexColor('#005b99'), spaceAfter=6, fontName='Helvetica-Bold'),
+        'body': ParagraphStyle('body', parent=ss['Normal'], fontSize=9, leading=13, alignment=4, spaceAfter=8),
+        'bold': ParagraphStyle('bold', parent=ss['Normal'], fontSize=9, textColor=colors.HexColor('#003366'), fontName='Helvetica-Bold'),
+        'footer': ParagraphStyle('footer', parent=ss['Normal'], fontSize=7, textColor=colors.grey, alignment=1),
+        'apa': ParagraphStyle('apa', parent=ss['Normal'], fontSize=8, leading=11, leftIndent=1*cm, firstLineIndent=-1*cm, spaceAfter=4)
     }
 
     def tabla(data, col_widths, header_bg=colors.HexColor('#003366')):
@@ -176,77 +177,62 @@ def generar_pdf_reporte(municipio, mes, mod_rend, mod_costo, pe_higo, icc_higo, 
         return t
 
     story = []
-    txt_rend = f"rinde {int((mod_rend - 1) * 100)}% mas de lo normal" if mod_rend >= 1 else f"rinde {int((1 - mod_rend) * 100)}% menos de lo normal"
-    txt_cost = f"{int((1 - mod_costo) * 100)}% mas barato" if mod_costo <= 1 else f"{int((mod_costo - 1) * 100)}% mas caro"
-
-    story.append(Paragraph("UNIVERSIDAD NACIONAL ROSARIO CASTELLANOS", estilos['bold']))
-    tipo_rep = "Reporte Mensual" if modo == 'mensual' else "Reporte Anual"
-    story.append(Paragraph(f"Analisis Tecnico-Economico — Diversificacion de Cultivos ({tipo_rep})", estilos['titulo']))
-    story.append(Paragraph(f"Condiciones de <b>{municipio}</b> en <b>{mes}</b>: El suelo {txt_rend} y la operacion es {txt_cost}.", estilos['body']))
-    story.append(HRFlowable(width="100%", thickness=1, color=colors.HexColor('#003366'), spaceAfter=10))
-
-    story.append(Paragraph("1. Ingresos por Cultivo", estilos['subtit']))
-    story.append(Paragraph("(La Lechuga Hidroponica NFT se cultiva en tubos con agua circulante, sin usar tierra, garantizando dinero cada mes).", estilos['body']))
-    story.append(Spacer(1, 6))
     
-    ing_data = [["Concepto de ingreso", "Cantidad", "Precio unitario", "Monto (MXN)"],
-                ["Venta de Higo", "6.82 t", "$34,994.18 / t", fmt(INGRESOS["Venta de Higo (6.82 t x $34,994.18/t)"])],
-                ["Venta Lechuga Hidroponica (NFT)", "4,200 kg", "$28.00 / kg", fmt(INGRESOS["Venta de Lechuga Hidroponica (4,200 kg x $28.00/kg)"])],
-                ["", "", "TOTAL INGRESOS", fmt(TOTAL_INGRESOS)]]
-    story.append(tabla(ing_data, [7.5*cm, 2.8*cm, 4*cm, 3.5*cm]))
-    story.append(Spacer(1, 10))
+    tipo_reporte = f"REPORTE MENSUAL (Proyección específica para {mes})" if modo == 'mensual' else "REPORTE ANUAL (Proyección Ejercicio 2026)"
+    
+    story.append(Paragraph("UNIVERSIDAD NACIONAL ROSARIO CASTELLANOS", estilos['titulo']))
+    story.append(Paragraph(f"INFORME EJECUTIVO: Análisis Técnico-Económico para la Diversificación de Cultivos<br/>{tipo_reporte}", estilos['titulo']))
+    story.append(HRFlowable(width="100%", thickness=1, color=colors.HexColor('#003366'), spaceAfter=15))
 
-    story.append(Paragraph("2. Gastos Variables por Cultivo", estilos['subtit']))
-    cv_data = [["Concepto (gasto variable)", "Cultivo asociado", "Monto (MXN)"]]
-    for k,v in COSTOS_VARIABLES.items():
-        rel = "Lechuga hidroponica" if 'hidroponico' in k.lower() or 'Insumos' in k else "Higo"
-        cv_data.append([k, rel, fmt(v)])
-    cv_data.append(["", "TOTAL COSTOS VARIABLES", fmt(TOTAL_CV)])
-    story.append(tabla(cv_data, [9.5*cm, 4.5*cm, 3.8*cm]))
-    story.append(Spacer(1, 10))
+    story.append(Paragraph("1. Resumen", estilos['seccion']))
+    story.append(Paragraph(f"Este informe ejecutivo presenta una solución basada en ciencia de datos para la crisis de rentabilidad agrícola en el municipio de {municipio}. A través del modelado matemático de superficies financieras y simulaciones estocásticas de Monte Carlo, se demuestra que la transición del monocultivo de maíz tradicional hacia un modelo agroforestal diversificado (Higo tecnificado + Lechuga Hidropónica NFT) garantiza la solvencia económica, estabilizando el flujo de caja mediante ingresos recurrentes.", estilos['body']))
 
-    story.append(Paragraph("3. Gastos Fijos (Compromisos obligatorios)", estilos['subtit']))
-    cf_data = [["Concepto (gasto fijo)", "Monto (MXN)"]]
-    for k,v in COSTOS_FIJOS.items(): cf_data.append([k, fmt(v)])
-    cf_data.append(["TOTAL COSTOS FIJOS", fmt(TOTAL_CF)])
-    story.append(tabla(cf_data, [11*cm, 4.3*cm]))
-    story.append(Spacer(1, 10))
+    story.append(Paragraph("2. Contexto y justificación", estilos['seccion']))
+    story.append(Paragraph("La producción agrícola tradicional en zonas periurbanas enfrenta una vulnerabilidad crítica ante el aumento de costos de agroquímicos y la dependencia de los regímenes pluviales. El monocultivo obliga a las familias productoras a endeudarse para sobrevivir los meses inactivos. La diversificación hacia cultivos de alto valor y bajo consumo hídrico (como la hidroponía) es una respuesta necesaria para asegurar la competitividad y la seguridad patrimonial.", estilos['body']))
 
-    story.append(Paragraph("4. Estado de Resultados Resumido (Ejercicio 2026)", estilos['subtit']))
+    story.append(Paragraph("3. Metodología", estilos['seccion']))
+    story.append(Paragraph("El enfoque de trabajo se fundamentó en la extracción y análisis de microdatos gestionados en una base de datos relacional (MySQL) mediante SQLAlchemy. Se empleó Cálculo Integral Multivariable para determinar el volumen regional de ganancias y un Motor Predictivo de Monte Carlo (5,000 iteraciones) para evaluar el riesgo financiero ante variaciones climáticas y de precios en la central de abastos.", estilos['body']))
+
+    story.append(Paragraph("4. Diagnóstico del problema", estilos['seccion']))
+    txt_rend = f"un rendimiento {int((mod_rend - 1) * 100)}% superior al promedio" if mod_rend >= 1 else f"un rendimiento {int((1 - mod_rend) * 100)}% inferior al promedio"
+    txt_cost = f"costos operativos {int((1 - mod_costo) * 100)}% más bajos" if mod_costo <= 1 else f"costos operativos {int((mod_costo - 1) * 100)}% más altos"
+    story.append(Paragraph(f"El análisis de los datos revela que el maíz tradicional opera frecuentemente con márgenes negativos. Para la evaluación en <b>{municipio}</b> bajo un esquema <b>{modo}</b>, las condiciones topográficas imponen {txt_rend} y {txt_cost}. Mantener el monocultivo bajo estos parámetros asegura pérdidas operativas frente a la inflación de insumos.", estilos['body']))
+
+    story.append(Paragraph("5. Solución propuesta", estilos['seccion']))
+    story.append(Paragraph("Se propone la implementación de un ecosistema modular: 1 hectárea de higo combinada con 100 metros cuadrados de sistema hidropónico NFT. A continuación, se fundamenta la viabilidad financiera proyectada a nivel anual para dimensionar el negocio:", estilos['body']))
+    
     er_data = [
-        ["Concepto", "Monto (MXN)", "Observacion"],
-        ["(+) Total ingresos", fmt(TOTAL_INGRESOS), "Higo + Lechuga hidroponica"],
+        ["Concepto", "Monto (MXN)", "Observación"],
+        ["(+) Total ingresos esperados", fmt(TOTAL_INGRESOS), "Venta de Higo + Lechuga hidroponica"],
         ["(-) Costos variables", fmt(TOTAL_CV), "Insumos, mano de obra, empaque"],
-        ["(=) Margen de contribucion", fmt(MARGEN_CONTRIB), "Lo que queda para cubrir fijos"],
-        ["(-) Costos fijos", fmt(TOTAL_CF), "Renta + amortizaciones + energia"],
-        ["(=) UTILIDAD NETA", fmt(UTILIDAD_OP), "Libre de impuestos — Regimen AGAPES"],
-        ["PUNTO DE EQUILIBRIO", fmt(PUNTO_EQ), "Ventas minimas necesarias para no perder"]
+        ["(=) Margen de contribución", fmt(MARGEN_CONTRIB), "Cobertura de costos operativos"],
+        ["(-) Costos fijos", fmt(TOTAL_CF), "Arrendamiento, amortizaciones y energía"],
+        ["(=) UTILIDAD NETA OPERATIVA", fmt(UTILIDAD_OP), "Libre de impuestos (Régimen AGAPES)"]
     ]
-    t_er = tabla(er_data, [6*cm, 4*cm, 7.8*cm])
+    t_er = tabla(er_data, [5.5*cm, 3.5*cm, 8*cm])
     t_er.setStyle(TableStyle([('BACKGROUND', (0,5), (-1,5), colors.HexColor('#1a6e1a')), ('TEXTCOLOR', (0,5), (-1,5), colors.white), ('FONTNAME', (0,5), (-1,5), 'Helvetica-Bold')]))
     story.append(t_er)
-    story.append(Spacer(1, 10))
+    story.append(Spacer(1, 6))
+    
+    story.append(Paragraph(f"El modelo requiere una inversión inicial de {fmt(TOTAL_INV)}, con un punto de equilibrio anual en {fmt(PUNTO_EQ)}. La viabilidad es alta, logrando un periodo de recuperación de la inversión (Payback) de {PAYBACK:.1f} años.", estilos['body']))
+    
+    txt_mes = f" focalizada en el mes de <b>{mes}</b>" if modo == 'mensual' else " anualizada"
+    story.append(Paragraph(f"Simulación de Viabilidad Estocástica: La prueba de estrés{txt_mes} demostró que este modelo tiene una Probabilidad de Éxito del {pe_higo:.1f}%, con un Puntaje de Seguridad (ICC) de {icc_higo:,.0f} puntos, clasificándose como '{clasificar_icc(icc_higo)}'.", estilos['body']))
 
-    story.append(Paragraph("5. Inversion Inicial y Recuperacion", estilos['subtit']))
-    inv_data = [["Concepto", "Monto (MXN)"]]
-    for k,v in INVERSION_INICIAL.items(): inv_data.append([k, fmt(v)])
-    inv_data.append(["INVERSION TOTAL", fmt(TOTAL_INV)])
-    story.append(tabla(inv_data, [10.5*cm, 4.3*cm]))
-    story.append(Spacer(1, 4))
-    story.append(Paragraph(f"La inversion se recupera en aproximadamente <b>{PAYBACK:.1f} anos ({PAYBACK*12:.0f} meses)</b>.", estilos['body']))
-    story.append(Spacer(1, 10))
+    story.append(Paragraph("6. Recomendaciones estratégicas", estilos['seccion']))
+    story.append(Paragraph("1. Ejecutar la inversión inicial priorizando la infraestructura del módulo hidropónico para asegurar liquidez en el primer mes.<br/>2. Establecer contratos de venta anticipada para la lechuga en mercados locales y restaurantes.<br/>3. Monitorear los ciclos fenológicos del higo apoyándose en el semáforo de competitividad de esta herramienta.", estilos['body']))
 
-    story.append(Paragraph("6. Prueba de Estres ante Clima y Precios (Monte Carlo)", estilos['subtit']))
-    story.append(Paragraph(f"La computadora simulo 5,000 escenarios con sequias y caidas de precio. El Higo en {mes} tiene una Probabilidad de Exito del <b>{pe_higo:.1f}%</b>, con un Puntaje de Seguridad de <b>{icc_higo:,.0f} pts</b> (Clasificacion: {clasificar_icc(icc_higo)}).", estilos['body']))
-    story.append(Spacer(1, 10))
+    story.append(Paragraph("7. Conclusiones", estilos['seccion']))
+    story.append(Paragraph("La transición hacia la diversificación agrícola es imperativa. El modelo propuesto no solo es económicamente viable, sino que actúa como un estabilizador estructural del flujo de caja. Al combinar el alto valor del higo con la rotación rápida de la hidroponía, las familias productoras mitigan el riesgo climático y aseguran el crecimiento de su patrimonio a largo plazo.", estilos['body']))
 
+    story.append(Paragraph("8. Anexos", estilos['seccion']))
     if df_dictamen is not None and not df_dictamen.empty:
-        story.append(Paragraph("7. Dictamen Operativo Histórico y Proyeccion (2018-2026)", estilos['subtit']))
-        dict_header = [["Anio", "Cultivo", "Tipo", "Vol. (t)", "Precio de Venta en\nMercado ($/ton)", "Costo Ajust.", "Utilidad Neta", "Puntaje Seguridad", "Estatus"]]
+        story.append(Paragraph("Anexo A: Dictamen Operativo Histórico y Proyección Predictiva (2018-2026)", estilos['body']))
+        dict_header = [["Año", "Cultivo", "Tipo", "Vol. (t)", "Precio Mercado", "Costo Ajustado", "Utilidad Neta", "ICC", "Estatus"]]
         dict_rows = []
         for _, r in df_dictamen.iterrows():
-            dict_rows.append([str(r['Anio']), str(r['Cultivo']), "Hist." if r['Tipo'] == 'Historico' else "Proyec.", f"{r['Volumen_t']:,.2f}", f"${r['PMR']:,.2f}", f"${r['Costo_Ajustado']:,.2f}", f"${r['Utilidad_Neta']:,.2f}", f"{r['ICC']:,.0f}", str(r['Estatus'])])
-        t_dict = tabla(dict_header + dict_rows, [1.1*cm, 2.4*cm, 1.4*cm, 2.5*cm, 2.1*cm, 2.1*cm, 2.3*cm, 1.8*cm, 2.9*cm])
+            dict_rows.append([str(r['Anio']), str(r['Cultivo']), "Hist." if r['Tipo'] == 'Historico' else "Proy.", f"{r['Volumen_t']:,.2f}", f"${r['PMR']:,.2f}", f"${r['Costo_Ajustado']:,.2f}", f"${r['Utilidad_Neta']:,.2f}", f"{r['ICC']:,.0f}", str(r['Estatus'])])
+        t_dict = tabla(dict_header + dict_rows, [1.1*cm, 2.2*cm, 1.2*cm, 1.8*cm, 2.1*cm, 2.1*cm, 2.1*cm, 1.8*cm, 2.6*cm])
         
         style_extra = []
         for idx, r in enumerate(df_dictamen.itertuples(), start=1):
@@ -255,15 +241,18 @@ def generar_pdf_reporte(municipio, mes, mod_rend, mod_costo, pe_higo, icc_higo, 
             style_extra.append(('BACKGROUND', (0, idx), (-1, idx), bg))
         t_dict.setStyle(TableStyle(style_extra))
         story.append(t_dict)
-        story.append(Spacer(1, 10))
+    else:
+        story.append(Paragraph("Nota: El Anexo del Dictamen Histórico 2018-2026 se excluye de la vista mensual para fines de legibilidad ejecutiva. Para visualizar la tabla completa, emita el Reporte Anual.", estilos['body']))
 
-    story.append(Paragraph("Veredicto Final del Analisis", estilos['subtit']))
-    story.append(Paragraph("Como demuestra el historico y las proyecciones, sembrar maiz tradicional representa pérdidas financieras seguras bajo el esquema de costos actual. La transicion hacia el modelo diversificado (Higo + modulo NFT hidropónico) es urgente para proteger su patrimonio, blindar el negocio ante el cambio climatico y asegurar dinero en efectivo de forma constante cada mes.", estilos['body']))
-    story.append(Spacer(1, 10))
-    
+    story.append(Paragraph("9. Referencias", estilos['seccion']))
+    story.append(Paragraph("Cámara de Diputados del H. Congreso de la Unión. (2024). Ley del Impuesto sobre la Renta: Régimen del Sector Primario (Art. 74). Diario Oficial de la Federación.", estilos['apa']))
+    story.append(Paragraph("Instituto Nacional de Estadística y Geografía [INEGI]. (2022). Censo Agropecuario 2022: Resultados definitivos para el estado de Morelos.", estilos['apa']))
+    story.append(Paragraph("Secretaría de Agricultura y Desarrollo Rural [SADER]. (2024). Cierre de la producción agrícola por municipio (2018-2024). SIAP.", estilos['apa']))
+
+    story.append(Spacer(1, 15))
     story.append(HRFlowable(width="100%", thickness=0.5, color=colors.grey))
     story.append(Spacer(1, 4))
-    story.append(Paragraph("Universidad Nacional Rosario Castellanos — Sede Gustavo A. Madero — Grupo 301 | Smart Agroforestry Morelos v3.1", estilos['footer']))
+    story.append(Paragraph("Universidad Nacional Rosario Castellanos — Licenciatura en Ciencias de Datos para Negocios — Smart Agroforestry Morelos", estilos['footer']))
 
     doc.build(story)
     buf.seek(0)
@@ -376,7 +365,10 @@ def render_tab(tab, municipio, mes, anio_range, hidro_val):
 
     elif tab == 'tab-math':
         func_maiz = lambda y, x: ((16.548*x*mr) - ((19.8+12.257*x)*mc) - (0.2*y*mc))
-        func_higo = (lambda y, x: ((356.259*x*mr) - (105.1*mc) - (0.1*(y**2)*mc) + (117.6*x*mr*0.5)) if hidro else lambda y, x: ((238.659*x*mr) - (105.1*mc) - (0.1*(y**2)*mc)))
+        if hidro:
+            func_higo = lambda y, x: ((356.259*x*mr) - (105.1*mc) - (0.1*(y**2)*mc) + (117.6*x*mr*0.5))
+        else:
+            func_higo = lambda y, x: ((238.659*x*mr) - (105.1*mc) - (0.1*(y**2)*mc))
         vol_maiz, _ = integrate.dblquad(func_maiz, 0, 5, 0, 3)
         vol_higo, _ = integrate.dblquad(func_higo, 0, 5, 0, 3)
         
