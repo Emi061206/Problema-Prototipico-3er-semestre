@@ -23,4 +23,4 @@ Sistema interactivo de Ciencia de Datos diseñado para la optimización de la re
 2. Configurar el archivo `.env` con las credenciales de acceso a la base de datos local.
 3. Instalar dependencias:
    ```bash
-      pip install dash dash-bootstrap-components pandas numpy plotly reportlab scipy python-dotenv mysql-connector-python matplotlib seaborn
+   pip install dash dash-bootstrap-components pandas numpy plotly reportlab scipy python-dotenv mysql-connector-python matplotlib seaborn
