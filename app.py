@@ -24,7 +24,7 @@ import dash_bootstrap_components as dbc # Sistema de cuadrícula y componentes c
 from reportlab.lib.pagesizes import A4 # Define el tamaño de página estándar para el documento PDF.
 from reportlab.lib import colors # Paleta de colores para dar formato a tablas y textos.
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle # Hojas de estilo en cascada para la tipografía del documento.
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, HRFlowable, Image as RLImage, PageBreak # Elementos modulares para construir el flujo del PDF (párrafos, saltos de página, imágenes, tablas).
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, HRFlowable, Image as RLImage, PageBreak # Elementos modulares para construir el flujo del PDF.
 from reportlab.lib.units import cm # Unidad de medida métrica para definir márgenes y anchos de columnas.
 
 # --- CONEXIÓN A BASE DE DATOS ---
@@ -55,7 +55,6 @@ df_hist = pd.read_sql("""
 
 # --- BASES DE DATOS ESTÁTICAS PARA REPORTES GRÁFICOS ---
 # Diccionarios de datos estructurados que contienen los históricos de utilidad neta y las proyecciones calculadas.
-# Estos datos alimentan específicamente a la función generadora de gráficos para los PDF ejecutivos.
 data_cuautla = [
     {"Año": 2018, "Cultivo": "Maíz grano", "Utilidad Neta (MXN)": 12600592.98},
     {"Año": 2018, "Cultivo": "Sorgo grano", "Utilidad Neta (MXN)": 32040998.30},
@@ -172,7 +171,6 @@ def generar_grafica_matplotlib(municipio):
     Función que genera la gráfica de barras de Matplotlib para embeber dentro del PDF Ejecutivo.
     Selecciona la paleta de colores y el DataFrame dependiendo del municipio solicitado.
     """
-    # Condicionales para cargar la estructura de datos estática específica por territorio.
     if municipio == 'Cuautla':
         df = pd.DataFrame(data_cuautla)
         paleta = "tab10"
@@ -183,29 +181,25 @@ def generar_grafica_matplotlib(municipio):
         df = pd.DataFrame(data_temixco)
         paleta = "viridis"
     else:
-        return None # Retorna vacío si el municipio no cuenta con datos hardcodeados en el script.
+        return None 
 
-    plt.figure(figsize=(10, 5)) # Declara el tamaño del lienzo en memoria.
-    sns.set_theme(style="whitegrid") # Establece un fondo limpio con grillas para legibilidad corporativa.
+    plt.figure(figsize=(10, 5)) 
+    sns.set_theme(style="whitegrid") 
     
-    # Renderiza un gráfico de barras comparando el desempeño financiero temporal entre tipos de cultivos.
     ax = sns.barplot(data=df, x="Año", y="Utilidad Neta (MXN)", hue="Cultivo", palette=paleta)
     
-    # Formateo estético del diagrama (títulos, ejes y línea base cero para demarcar quiebras).
     plt.title(f'Histórico y Proyección de Utilidad Neta: {municipio} (2018-2026)', fontsize=14, fontweight='bold')
     plt.xlabel('Año', fontsize=12)
     plt.ylabel('Utilidad Neta (MXN)', fontsize=12)
-    plt.axhline(0, color='red', linestyle='--', linewidth=1.5) # Línea crítica que visualiza el umbral de pérdida neta.
-    plt.legend(title='Cultivo', bbox_to_anchor=(1.02, 1), loc='upper left') # Extrae la leyenda para no solapar las barras.
-    plt.tight_layout() # Asegura que los textos no se corten en los bordes del lienzo.
+    plt.axhline(0, color='red', linestyle='--', linewidth=1.5) 
+    plt.legend(title='Cultivo', bbox_to_anchor=(1.02, 1), loc='upper left') 
+    plt.tight_layout() 
     
-    # Guarda el gráfico generado en un flujo de bytes virtual en RAM y elimina el gráfico para liberar memoria del servidor.
     buf = io.BytesIO()
     plt.savefig(buf, format='png', dpi=300)
     plt.close()
     buf.seek(0)
     
-    # Retorna un objeto Image compatible nativamente con ReportLab.
     return RLImage(buf, width=16*cm, height=8*cm)
 
 def generar_dictamen_completo(municipio, anio_ini=2018, anio_fin=2026):
@@ -213,33 +207,27 @@ def generar_dictamen_completo(municipio, anio_ini=2018, anio_fin=2026):
     Algoritmo central del modelo. Combina los datos duros históricos (2018-2024) 
     con predicciones estocásticas Monte Carlo (2025-2026) para un municipio dado.
     """
-    # Extrae factores de corrección territorial específicos del municipio evaluado.
     row_mun = df_municipios[df_municipios['nombre'] == municipio].iloc[0]
     mr, mc, mk = row_mun['mod_rendimiento'], row_mun['mod_costo'], row_mun['mod_riesgo']
     
-    filas = [] # Lista temporal para construir posteriormente el DataFrame completo.
+    filas = [] 
     
-    # Filtra la base de datos histórica por el municipio y el rango temporal solicitado.
     df_mun = df_hist[(df_hist['Nommunicipio'] == municipio) & (df_hist['Anio'] >= anio_ini) & (df_hist['Anio'] <= min(2024, anio_fin))].copy()
 
-    # Procesamiento histórico: recalcula la utilidad real pasada utilizando los modelos de riesgo ajustados.
     for _, r in df_mun.iterrows():
         cult = r['Nomcultivo']
         cat_cult = df_catalogo[df_catalogo['nombre'] == cult]
-        if cat_cult.empty: continue # Ignora filas sin coincidencia en el catálogo base.
+        if cat_cult.empty: continue 
         
-        # Recupera los valores contables por iteración.
         prima = cat_cult['prima_sostenibilidad'].values[0]
         riesgo = cat_cult['riesgo_probabilidad'].values[0]
         costo_op = cat_cult['costo_operativo'].values[0]
         
-        # Cálculos de utilidad retrospectiva considerando factores físicos del municipio.
         precio_aj = r['PMR'] * (1 + prima)
         costo_aj = costo_op * mc
         utilidad = (r['Volumen'] * mr) * precio_aj - costo_aj
-        icc = utilidad * (1 - riesgo * mk) # El Índice de Competitividad (ICC) descuenta la probabilidad de fracaso biológico.
+        icc = utilidad * (1 - riesgo * mk) 
         
-        # Anexa la evaluación al listado bajo la clasificación 'Historico'.
         filas.append({
             'Anio': int(r['Anio']), 'Cultivo': cult, 'Tipo': 'Historico',
             'Volumen_t': round(r['Volumen'], 2), 'PMR': round(r['PMR'], 2),
@@ -247,30 +235,23 @@ def generar_dictamen_completo(municipio, anio_ini=2018, anio_fin=2026):
             'ICC': round(icc, 0), 'Estatus': clasificar_icc(icc)
         })
 
-    # Fase Predictiva Monte Carlo: si el análisis requiere evaluar años futuros.
     if anio_fin > 2024:
         for anio in range(max(2025, anio_ini), anio_fin + 1):
             for _, row in df_catalogo.iterrows():
                 cult = row['nombre']
-                mb = 1.0 # Modificador fenológico base al evaluar ciclos anualizados enteros.
+                mb = 1.0 
                 pb = PRECIO_BASE.get(cult, 5000)
                 
-                # Desviación estándar calculada como el producto del precio, la volatilidad catalogada y el clima.
                 sd = pb * VOLATILIDAD.get(cult, 0.15) * max(mb, 0.1)
-                
-                # Ejecuta una simulación estocástica de 5,000 iteraciones extrayendo la media esperada del precio de venta.
                 precio_esp = float(np.mean(np.random.normal(pb * mb, sd, 5000)))
                 costo_aj = row['costo_operativo'] * mc
                 vol = VOL_ESPERADO.get(cult, 4.0)
                 
-                # Cálculo de la utilidad y el riesgo proyectados mediante simulación.
                 utilidad = (vol * mr * mb) * (precio_esp * (1 + row['prima_sostenibilidad'])) - costo_aj
                 
-                # Integra matemáticamente la rentabilidad del módulo Hidropónico (como estabilizador) si corresponde.
                 if cult == 'Higo': utilidad += (117600.00 - 35536.00)
                 icc = utilidad * (1 - row['riesgo_probabilidad'] * mk)
                 
-                # Anexa la evaluación al listado bajo la clasificación predictiva.
                 filas.append({
                     'Anio': anio, 'Cultivo': cult, 'Tipo': 'Proyeccion Monte Carlo',
                     'Volumen_t': round(vol * mr * mb, 3), 'PMR': round(precio_esp, 2),
@@ -278,7 +259,6 @@ def generar_dictamen_completo(municipio, anio_ini=2018, anio_fin=2026):
                     'ICC': round(icc, 0), 'Estatus': clasificar_icc(icc)
                 })
     
-    # Consolida y retorna todos los registros procesados.
     return pd.DataFrame(filas)
 
 def generar_csv(df: pd.DataFrame) -> bytes:
@@ -292,12 +272,10 @@ def generar_pdf_reporte(municipio, mod_rend, mod_costo, pe_higo, icc_higo, df_di
     Compilador del Reporte Ejecutivo final en PDF.
     Estructura 5 páginas completas con diagnóstico, análisis estocástico y resúmenes financieros.
     """
-    buf = io.BytesIO() # Flujo de memoria donde residirá el binario del PDF.
-    # Inicializa el lienzo del documento con márgenes de 2cm estandarizados en formato A4.
+    buf = io.BytesIO() 
     doc = SimpleDocTemplate(buf, pagesize=A4, rightMargin=2*cm, leftMargin=2*cm, topMargin=2*cm, bottomMargin=2*cm)
-    ss = getSampleStyleSheet() # Obtiene la plantilla tipográfica nativa de ReportLab.
+    ss = getSampleStyleSheet() 
     
-    # Declaración del diccionario de estilos personalizados para formatear limpiamente los distintos niveles jerárquicos del texto.
     estilos = {
         'encabezado': ParagraphStyle('encabezado', parent=ss['Normal'], fontSize=10, textColor=colors.HexColor('#003366'), spaceAfter=15, fontName='Helvetica-Bold'),
         'titulo': ParagraphStyle('titulo', parent=ss['Heading1'], fontSize=16, textColor=colors.HexColor('#003366'), spaceAfter=12, alignment=1),
@@ -310,7 +288,6 @@ def generar_pdf_reporte(municipio, mod_rend, mod_costo, pe_higo, icc_higo, df_di
     }
 
     def tabla(data, col_widths, header_bg=colors.HexColor('#003366')):
-        """Helper interno para construir grillas contables estilizadas alternando colores."""
         t = Table(data, colWidths=col_widths)
         t.setStyle(TableStyle([
             ('BACKGROUND', (0,0), (-1,0), header_bg), ('TEXTCOLOR', (0,0), (-1,0), colors.white),
@@ -320,14 +297,12 @@ def generar_pdf_reporte(municipio, mod_rend, mod_costo, pe_higo, icc_higo, df_di
         ]))
         return t
 
-    # Inicia la recolección de los módulos o párrafos que compondrán el flujo (story) del PDF final.
     story = []
     
-    # --- PÁGINA 1: Encabezado institucional, Resumen Ejecutivo y Metodología base ---
     story.append(Paragraph("UNIVERSIDAD NACIONAL ROSARIO CASTELLANOS | SEDE GAM | GRUPO: 301", estilos['encabezado']))
     story.append(Paragraph("Análisis Técnico-Económico para la Diversificación de Cultivos en México", estilos['titulo']))
     story.append(Paragraph(f"Reporte Ejecutivo Anual: Municipio de {municipio}", estilos['subtitulo']))
-    story.append(HRFlowable(width="100%", thickness=1.5, color=colors.HexColor('#003366'), spaceAfter=15)) # Divisor horizontal visual.
+    story.append(HRFlowable(width="100%", thickness=1.5, color=colors.HexColor('#003366'), spaceAfter=15)) 
     
     story.append(Paragraph("1. Resumen Ejecutivo", estilos['seccion']))
     story.append(Paragraph(f"El modelo agrícola tradicional basado en el monocultivo en la región periurbana de Morelos enfrenta un colapso financiero debido a la vulnerabilidad climática y al incremento en el costo de los insumos. Este informe documenta el análisis de datos históricos (2018-2024) y proyecciones estocásticas (2025-2026) para el municipio de {municipio}. Se propone y evalúa financieramente la transición a un modelo modular diversificado: 1 hectárea de higo tecnificado combinada con un módulo hidropónico NFT de 100 m² para cultivo de lechuga.", estilos['body']))
@@ -338,13 +313,11 @@ def generar_pdf_reporte(municipio, mod_rend, mod_costo, pe_higo, icc_higo, df_di
     story.append(Paragraph("3. Metodología Aplicada", estilos['seccion']))
     story.append(Paragraph("El enfoque del sistema se fundamentó en la extracción y análisis de microdatos gestionados en una base de datos relacional (MySQL). Se empleó Cálculo Integral para determinar el escalamiento de costos operativos, y un Motor Predictivo de Monte Carlo (5,000 iteraciones) para evaluar el riesgo financiero ante variaciones climáticas y de precios en las centrales de abastos de la región central del país.", estilos['body']))
     
-    story.append(PageBreak()) # Cierre e impresión de la página 1.
+    story.append(PageBreak()) 
 
-    # --- PÁGINA 2: Impresión y redacción del diagnóstico específico regional ---
     story.append(Paragraph(f"4. Diagnóstico y Proyecciones: {municipio} (2018-2026)", estilos['seccion']))
     story.append(Paragraph("El análisis de los microdatos refleja una crisis inminente para los productores que mantienen el cultivo tradicional, justificando con evidencia matemática la urgente necesidad de diversificar el riesgo.", estilos['body']))
     
-    # Inyección condicionada del texto descriptivo dependiendo del territorio evaluado para brindar personalización.
     if municipio == 'Cuautla':
         story.append(Paragraph("• Declive Tradicional: Cuautla ha operado históricamente con altos volúmenes de maíz y sorgo; sin embargo, el encarecimiento de operaciones empujará ambos cultivos a un déficit operativo para los siguientes ejercicios.", estilos['bullet']))
         story.append(Paragraph("• Proyección de Pérdidas (2025-2026): Se estima una pérdida operativa anual promedio de -$13,337.16 MXN para el maíz grano y -$15,257.10 MXN para el sorgo.", estilos['bullet']))
@@ -358,7 +331,6 @@ def generar_pdf_reporte(municipio, mod_rend, mod_costo, pe_higo, icc_higo, df_di
         story.append(Paragraph("• Proyección de Pérdidas (2025-2026): El déficit proyectado es de -$14,650.00 MXN anuales promedio en maíz grano, haciendo inviable su continuity.", estilos['bullet']))
         story.append(Paragraph("• Modelo de Estabilización: La diversificación con higo y lechuga NFT estabiliza el flujo, proyectando utilidades combinadas superiores a los $450,000.00 MXN anuales para la zona.", estilos['bullet']))
 
-    # LLamado a la función creadora de la imagen gráfica, si existe, la integra al bloque.
     img_grafica = generar_grafica_matplotlib(municipio)
     if img_grafica:
         story.append(Spacer(1, 15))
@@ -366,15 +338,13 @@ def generar_pdf_reporte(municipio, mod_rend, mod_costo, pe_higo, icc_higo, df_di
         story.append(Spacer(1, 10))
         story.append(Paragraph(f"Figura 1. Evolución de la utilidad neta histórica y predictiva para {municipio}.", estilos['footer']))
 
-    story.append(PageBreak()) # Cierre e impresión de la página 2.
+    story.append(PageBreak()) 
 
-    # --- PÁGINA 3: Declaración del presupuesto inicial e inversión de CAPEX en formato contable ---
     story.append(Paragraph("5. Monto de Inversión Inicial (CAPEX) del Nuevo Modelo", estilos['seccion']))
     story.append(Paragraph("La transición al ecosistema diversificado requiere una inversión inicial estructurada. Este capital permite habilitar tanto la hectárea de producción agroforestal como el módulo de agricultura de precisión. Es vital destacar que el 100% de esta inversión resulta deducible de impuestos en el ejercicio correspondiente para las personas físicas que tributen en el sector primario (Art. 74 de la Ley del ISR).", estilos['body']))
     
     story.append(Spacer(1, 15))
     
-    # Declaración manual de la matriz de la tabla CAPEX.
     capex_data = [
         ["Concepto de Inversión / Activo Fijo", "Monto (MXN)", "Amortización Contable"],
         ["A. Cultivo de Higo (1 hectárea)", "", ""],
@@ -387,12 +357,11 @@ def generar_pdf_reporte(municipio, mod_rend, mod_costo, pe_higo, icc_higo, df_di
         ["Subtotal Infraestructura Hidropónica", "$67,000.00", ""],
         ["INVERSIÓN INICIAL TOTAL EXIGIBLE", "$147,000.00", ""]
     ]
-    t_capex = tabla(capex_data, [8*cm, 3.5*cm, 5.5*cm]) # Formateo de la tabla con la función de ayuda 'tabla'.
+    t_capex = tabla(capex_data, [8*cm, 3.5*cm, 5.5*cm]) 
     story.append(t_capex)
     
-    story.append(PageBreak()) # Cierre e impresión de la página 3.
+    story.append(PageBreak()) 
 
-    # --- PÁGINA 4: Evaluaciones directas de Equilibrio Operativo y Riesgos de Mercado ---
     story.append(Paragraph("6. Evaluación Financiera y Punto de Equilibrio Operativo", estilos['seccion']))
     story.append(Paragraph("El modelo matemático propuesto garantiza la solvencia operativa del negocio mediante un esquema híbrido. Este diseño combina de manera estratégica la alta rentabilidad estacional del higo con los ciclos cortos, mensuales y altamente estables de la hidroponía, mitigando el estrés de liquidez.", estilos['body']))
     story.append(Paragraph("• Ingresos Brutos Anuales: $356,259.31 MXN (Compuestos por la Venta de Higo: $238,659.31 MXN y la Venta de lechuga NFT: $117,600.00 MXN).", estilos['bullet']))
@@ -407,9 +376,8 @@ def generar_pdf_reporte(municipio, mod_rend, mod_costo, pe_higo, icc_higo, df_di
     story.append(Paragraph("2. Siniestralidad Agroclimática (Plagas/Clima): La superposición de una merma del 25% en el higo por infestación entomológica y 15% en hidroponía por golpe de calor atípico disminuiría la utilidad en un -26.8%, manteniendo la rentabilidad general en $183,747.51 MXN.", estilos['bullet']))
     story.append(Paragraph("3. Fricción de Liquidez Transitoria: Asumir un desfase de capital inicial forzaría a reducir la operación hidropónica al 70% de su capacidad. Este escenario impactaría la utilidad final en apenas un -7.2%.", estilos['bullet']))
 
-    story.append(PageBreak()) # Cierre e impresión de la página 4.
+    story.append(PageBreak()) 
 
-    # --- PÁGINA 5: Estado de Resultados Resumido, Conclusiones y Referencias APA ---
     story.append(Paragraph("8. Estado de Resultados y Conclusiones", estilos['seccion']))
     story.append(Paragraph("El Estado de Resultados Proforma estructurado para el cierre del ejercicio fiscal 2026 demuestra una Utilidad Neta Operativa de $251,159.31 MXN. Debido a que los ingresos agrícolas brutos equivalen a una cifra inferior al límite exento de 20 UMA anuales aplicables para personas físicas del sector primario, la utilidad proyectada queda completamente libre de gravamen de ISR.", estilos['body']))
     
@@ -421,21 +389,14 @@ def generar_pdf_reporte(municipio, mod_rend, mod_costo, pe_higo, icc_higo, df_di
     story.append(Paragraph("Instituto Nacional de Estadística y Geografía [INEGI]. (2022). Censo Agropecuario 2022: Resultados definitivos para el estado de Morelos.", estilos['bullet']))
     story.append(Paragraph("Secretaría de Agricultura y Desarrollo Rural [SADER]. (2024). Cierre de la producción agrícola por municipio (2018-2024). Servicio de Información Agroalimentaria y Pesquera [SIAP].", estilos['bullet']))
 
-    # --- BLOQUES DE TABLAS COMENTADOS POR SOLICITUD EXPLÍCITA DEL USUARIO ---
-    # Las tablas densas fueron inhabilitadas aquí para asegurar los requisitos de limpieza estética del informe ejecutivo.
-    # if df_dictamen is not None:
-    #     ... 
-
-    # Agregado final del pie de página institucional del documento PDF.
     story.append(Spacer(1, 40))
     story.append(HRFlowable(width="100%", thickness=0.5, color=colors.grey))
     story.append(Spacer(1, 4))
     story.append(Paragraph("Universidad Nacional Rosario Castellanos — Licenciatura en Ciencias de Datos para Negocios — Smart Agroforestry Morelos", estilos['footer']))
 
-    # Disparo de la compilación de todos los objetos integrados al documento y escritura al buffer temporal.
     doc.build(story)
     buf.seek(0)
-    return buf.read() # Devuelve los bytes listos para ser transmitidos por el navegador vía base64.
+    return buf.read() 
 
 # --- COMPONENTES VISUALES DASH (MÓDULOS DE REACT) ---
 def kpi_card(title, value, sub=None, color=CYAN):
@@ -586,32 +547,61 @@ def render_tab(tab, municipio, anio_range, hidro_val):
         costo_total_higo, _ = integrate.quad(lambda x: cm_higo, 0, 5)
         costo_total_nft, _ = integrate.quad(lambda x: cm_nft, 0, 5)
         
-        # Gráfica de barras comparativa extraída directamente de la integración numérica resuelta.
-        fig_bar = go.Figure(data=[
+        # Gráfica independiente renderizando la integración de costos para el cultivo de Higo.
+        fig_higo = go.Figure(data=[
             go.Bar(
-                name='Comparativa', 
-                x=['Higo (5 ha)', 'Hidropónico NFT (5 ha)'], 
-                y=[costo_total_higo, costo_total_nft], 
-                marker_color=[GREEN, RED]
+                name='Higo (5 ha)', 
+                x=['Higo (5 ha)'], 
+                y=[costo_total_higo], 
+                marker_color=GREEN
             )
         ])
         
-        fig_bar.update_layout(
-            title="Comparativa de Costo Variable Total (Integración 0 a 5 ha)", 
-            yaxis_title='Costo Total Acumulado (MXN)',
+        # Formateo estético de la gráfica individual del Higo.
+        fig_higo.update_layout(
+            title="Costo Variable Acumulado: Higo", 
+            yaxis_title='Costo (MXN)',
             plot_bgcolor='rgba(0,0,0,0)', 
             paper_bgcolor='rgba(0,0,0,0)', 
             font_color='#fff', 
-            height=520
+            height=380
+        )
+
+        # Gráfica independiente renderizando la integración de costos para el módulo Hidropónico NFT.
+        fig_nft = go.Figure(data=[
+            go.Bar(
+                name='Hidropónico NFT (5 ha)', 
+                x=['Hidropónico NFT (5 ha)'], 
+                y=[costo_total_nft], 
+                marker_color=RED
+            )
+        ])
+        
+        # Formateo estético de la gráfica individual del módulo NFT.
+        fig_nft.update_layout(
+            title="Costo Variable Acumulado: NFT", 
+            yaxis_title='Costo (MXN)',
+            plot_bgcolor='rgba(0,0,0,0)', 
+            paper_bgcolor='rgba(0,0,0,0)', 
+            font_color='#fff', 
+            height=380
         )
         
+        # Montaje de las tarjetas de impacto superior para la pestaña matemática.
         kpis_math = html.Div([
             kpi_card("Costo Integral Higo", fmt(costo_total_higo), "Escalable a 5 ha", GREEN), 
             kpi_card("Costo Integral NFT", fmt(costo_total_nft), "No escalable masivamente", RED), 
             kpi_card("Brecha Operativa", fmt(costo_total_nft - costo_total_higo), "Ahorro al mantener modularidad", CYAN)
         ], style={'display':'flex','gap':'12px','marginBottom':'20px'})
         
-        return html.Div([kpis_math, grafico_card(fig_bar)])
+        # Retorno de la estructura HTML integrando ambas gráficas en un layout de cuadrícula (Grid) de dos columnas.
+        return html.Div([
+            kpis_math, 
+            html.Div(style={'display':'grid','gridTemplateColumns':'1fr 1fr','gap':'16px'}, children=[
+                html.Div([dcc.Graph(figure=fig_higo)], style={'background':CARD,'border':f'1px solid {BORDER}','borderRadius':'8px','padding':'16px'}),
+                html.Div([dcc.Graph(figure=fig_nft)], style={'background':CARD,'border':f'1px solid {BORDER}','borderRadius':'8px','padding':'16px'})
+            ])
+        ])
 
     elif tab == 'tab-mc':
         # Algoritmo de simulación masiva (Monte Carlo).

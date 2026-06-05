@@ -1,45 +1,68 @@
 GUIA DE INSTALACION Y CONFIGURACION (SISTEMA SMART AGROFORESTRY MORELOS)
-Proyecto: Smart Agroforestry - Analisis de Diversificacion Agricola
+Proyecto: Smart Agroforestry - Analisis de Diversificacion Agricola (Version Dash)
 Enfoque: Ciencia de Datos, Inteligencia de Mercado y Analisis Contable
 
-Esta guia detalla el proceso para preparar el entorno de desarrollo local optimizado para la ejecucion del panel interactivo, el motor de inversion y la generacion de reportes ejecutivos.
+---------------------------------------------------------
+1. CLONAR EL REPOSITORIO DE GITHUB
+---------------------------------------------------------
+Para descargar el código fuente y la estructura del proyecto a tu equipo local, sigue estos pasos:
 
-1. VISUAL STUDIO CODE (VS Code)
-* Descargar desde code.visualstudio.com.
-* Instalar marcando la opcion "Agregar al PATH".
-* Instalar extensiones: Python (Microsoft) y MySQL (Weijan Chen).
+Paso 1: Descargar e instalar Git
+- Si no tienes Git instalado, descárgalo desde: https://git-scm.com/downloads e instálalo dejando las configuraciones por defecto.
 
-### 2. Guía de Instalación (Actualizada)
+Paso 2: Abrir la terminal
+- En Windows: Abre el menú de inicio, busca "cmd" o "Símbolo del sistema" y ejecútalo. También puedes usar la terminal integrada de VS Code.
+- En Mac/Linux: Abre la aplicación "Terminal".
 
-```text
-GUIA DE INSTALACION Y CONFIGURACION (SISTEMA SMART AGROFORESTRY MORELOS)
-Proyecto: Smart Agroforestry - Analisis de Diversificacion Agricola (Version Dash)
+Paso 3: Navegar a la carpeta de destino
+- Usa el comando "cd" (change directory) para moverte a la carpeta donde deseas guardar el proyecto. 
+- Ejemplo: cd Documentos/Proyectos
 
-1. ENTORNO DE DESARROLLO (PYTHON 3.10+)
-- Descargar la version mas reciente en python.org.
-- CRITICO: Marcar la casilla "Add Python to PATH" durante la instalacion.
+Paso 4: Ejecutar el comando de clonación
+- Escribe el siguiente comando y presiona Enter:
+  git clone https://github.com/Emi061206/Problema-Prototipico-3er-semestre
 
-2. BASE DE DATOS (MYSQL)
-- Cargar el archivo "sistema_agricola_morelos.sql".
-- Asegurar que la tabla "catalogo_cultivos" refleje la inversion inicial de $147,000.00.
+Paso 5: Ingresar a la carpeta del proyecto
+- Una vez finalizada la descarga, accede a la carpeta recién creada:
+  cd Problema-Prototipico-3er-semestre
 
-3. INSTALACION DE LIBRERIAS
-Ejecutar el siguiente comando en la terminal para instalar el motor grafico y financiero:
+---------------------------------------------------------
+2. ENTORNO DE DESARROLLO Y EDITOR DE CODIGO
+---------------------------------------------------------
+- VISUAL STUDIO CODE (VS Code): Descargar desde code.visualstudio.com. Instalar marcando la opcion "Agregar al PATH".
+- EXTENSIONES RECOMENDADAS: Python (Microsoft) y MySQL (Weijan Chen).
+- PYTHON (3.10+): Descargar la versión más reciente en python.org.
+- CRÍTICO: Marcar la casilla "Add Python to PATH" durante la instalación.
 
-pip install dash dash-bootstrap-components pandas numpy plotly reportlab scipy python-dotenv mysql-connector-python
+---------------------------------------------------------
+3. BASE DE DATOS (MYSQL)
+---------------------------------------------------------
+- Cargar el archivo "sistema_agricola_morelos.sql" en tu gestor de base de datos local (ej. MySQL Workbench o XAMPP).
+- Asegurar que la tabla "catalogo_cultivos" refleje la inversión inicial estructurada para el modelo diversificado.
 
-para ejecutar el archivo es con el siguiente comando mediante la terminal:
-python app.py
+---------------------------------------------------------
+4. INSTALACION DE LIBRERIAS (SIN REQUIREMENTS.TXT)
+---------------------------------------------------------
+Abre la terminal dentro de la carpeta de tu proyecto y ejecuta el siguiente comando unificado para instalar todo el motor gráfico, matemático y de bases de datos:
 
-4. CONFIGURACION DEL ARCHIVO .ENV
-Crear un archivo .env en la raiz con el siguiente formato:
+pip install dash dash-bootstrap-components pandas numpy scipy plotly matplotlib seaborn reportlab SQLAlchemy PyMySQL python-dotenv
+
+---------------------------------------------------------
+5. CONFIGURACION DEL ARCHIVO .ENV
+---------------------------------------------------------
+Crea un archivo llamado ".env" exactamente en la raíz del proyecto (al mismo nivel que app_11.py) con el siguiente formato, ajustando la contraseña según tu equipo local:
+
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=tu_contrasenia
 DB_NAME=sistema_agricola_morelos
 DB_PORT=3306
 
-5. ESTRUCTURA DEL REPOSITORIO
-- app.py: Aplicacion principal (Dash) y Callbacks reactivos.
-- motor_financiero.py: Logica de punto de equilibrio y generador PDF.
-- Historico_Morelos_Focalizado.csv: Microdatos agricolas 2018-2024.
+---------------------------------------------------------
+6. EJECUCION DEL SISTEMA
+---------------------------------------------------------
+Para iniciar la aplicación analítica y montar el servidor local, ejecuta el siguiente comando en la terminal:
+
+python app_11.py
+
+- Una vez que la terminal indique que el servidor está corriendo, abre tu navegador web e ingresa a: http://127.0.0.1:8050
