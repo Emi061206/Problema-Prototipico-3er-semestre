@@ -48,18 +48,7 @@ Abre la terminal dentro de la carpeta de tu proyecto y ejecuta el siguiente coma
 pip install dash dash-bootstrap-components pandas numpy scipy plotly matplotlib seaborn reportlab SQLAlchemy PyMySQL python-dotenv
 
 ---------------------------------------------------------
-5. CONFIGURACION DEL ARCHIVO .ENV
----------------------------------------------------------
-Crea un archivo llamado ".env" exactamente en la raíz del proyecto (al mismo nivel que app_11.py) con el siguiente formato, ajustando la contraseña según tu equipo local:
-
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=tu_contrasenia
-DB_NAME=sistema_agricola_morelos
-DB_PORT=3306
-
----------------------------------------------------------
-6. EJECUCION DEL SISTEMA
+5. EJECUCION DEL SISTEMA
 ---------------------------------------------------------
 Para iniciar la aplicación analítica y montar el servidor local, ejecuta el siguiente comando en la terminal:
 
